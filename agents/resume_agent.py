@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from tools.resume_parser import load_resume
+from config.llm import invoke_llm
 
 load_dotenv()
 

@@ -3,6 +3,7 @@ import re
 from functools import lru_cache
 from config.llm import llm
 from resumes.profile import PROFILE
+from config.llm import invoke_llm
 
 @lru_cache(maxsize=50)
 def cached_llm(prompt):
@@ -36,7 +37,7 @@ Example:
 }}
 """
 
-    response = cached_llm(prompt)
+    response = invoke_llm(prompt)
 
     text = response.content.strip()
 

@@ -10,19 +10,19 @@ import time
 
 
 def ranking_node(state: JobState):
-    analysis = analyze_job(state["job"])
-    return {"analysis": analysis}
-
+    result = analyze_job(state["job"])
+    time.sleep(2)
+    return {"analysis": result}
 
 def resume_node(state: JobState):
     resume = generate_resume(state["job"])
+    time.sleep(2)
     return {"resume": resume}
 
-
 def cover_node(state: JobState):
-    cover_letter = generate_cover_letter(state["job"])
-    return {"cover_letter": cover_letter}
-
+    letter = generate_cover_letter(state["job"])
+    time.sleep(2)
+    return {"cover_letter": letter}
 
 def application_node(state: JobState):
     saved = save_application_artifacts(
