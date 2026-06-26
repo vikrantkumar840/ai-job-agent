@@ -1,0 +1,10 @@
+langgraph
+langchain
+langchain-openai
+openai
+playwright
+pandas
+streamlit
+python-dotenv
+beautifulsoup4
+requests
