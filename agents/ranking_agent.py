@@ -1,26 +1,58 @@
-from resumes.profile import SKILLS
-from agents.job_matcher import score_job
+import json
+import re
 
-def scoring_node(state):
+from config.llm import llm
+from resumes.profile import PROFILE
 
-    results = []
 
-    for job in state["jobs"]:
+def analyze_job(job):
 
-        score = score_job(
-            job["description"],
-            SKILLS
-        )
+    prompt = f"""
+You are an ATS Resume Scoring AI.
 
-        job["score"] = score
+Candidate Resume:
+{PROFILE}
 
-        results.append(job)
+Job Description:
+{job["description"]}
 
-    results.sort(
-        key=lambda x: x["score"],
-        reverse=True
-    )
+Compare the resume with the job.
 
-    return {
-        "scored_jobs": results
-    }
+Return ONLY a JSON object.
+
+Do NOT explain.
+Do NOT write markdown.
+Do NOT wrap inside ```json.
+
+Example:
+
+{{
+    "score":95,
+    "matched_skills":["AWS","Terraform"],
+    "missing_skills":["Python"],
+    "recommendation":"Excellent match."
+}}
+"""
+
+    response = llm.invoke(prompt)
+
+    text = response.content.strip()
+
+    match = re.search(r"\{.*\}", text, re.DOTALL)
+
+    if match:
+        text = match.group(0)
+
+    try:
+        return json.loads(text)
+
+    except Exception as e:
+        print(e)
+        print(text)
+
+        return {
+            "score": 0,
+            "matched_skills": [],
+            "missing_skills": [],
+            "recommendation": "JSON Parsing Failed"
+        }

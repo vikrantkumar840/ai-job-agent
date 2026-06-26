@@ -1,21 +1,26 @@
 import os
 
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 
-from resumes.profile import PROFILE
+from tools.resume_parser import load_resume
 
 load_dotenv()
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    google_api_key=os.getenv("GOOGLE_API_KEY")
+PROFILE = load_resume(
+    "resumes/base/Vikrant_devops-14-06-2026.pdf"
 )
 
-def tailor_resume(job):
+llm = ChatGroq(
+    model="llama-3.1-8b-instant",
+    api_key=os.getenv("GROQ_API_KEY")
+)
+
+
+def generate_resume(job):
 
     prompt = f"""
-You are an expert technical recruiter.
+You are an expert ATS Resume Writer.
 
 Candidate Resume:
 
@@ -25,14 +30,16 @@ Job Description:
 
 {job["description"]}
 
-Rewrite the resume so it is optimized
-for this job.
+Rules:
+- Keep all true experience.
+- Never invent projects.
+- Never invent certifications.
+- Never invent companies.
+- Improve ATS keywords.
+- Reorder skills according to the job.
+- Keep markdown format.
 
-Keep it ATS friendly.
-
-Highlight relevant skills and projects.
-
-Return only the updated resume.
+Return ONLY the resume.
 """
 
     response = llm.invoke(prompt)

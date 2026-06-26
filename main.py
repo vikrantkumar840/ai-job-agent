@@ -1,18 +1,33 @@
-from workflow import run
+from tools.job_search import search_jobs
+from workflows.graph import workflow
 
-results = run()
+jobs = search_jobs()
 
-for item in results:
+print("\nTop Jobs\n")
 
-    print("=" * 60)
+for job in jobs:
 
-    print(item["job"]["title"])
-    print(item["job"]["company"])
+    print("=" * 70)
+    print(job["title"])
+    print(job["company"])
 
-    print()
+    result = workflow.invoke({"job": job})
 
-    print(item["analysis"])
+    analysis = result["analysis"]
 
-    print()
+    print("\nATS ANALYSIS")
+    print("-" * 70)
+    print("Score:", analysis["score"])
+    print("Matched Skills:", ", ".join(analysis["matched_skills"]))
+    print("Missing Skills:", ", ".join(analysis["missing_skills"]))
+    print("Recommendation:", analysis["recommendation"])
 
-    print(item["resume"])
+    print("\nTAILORED RESUME")
+    print("-" * 70)
+    print(result["resume"])
+
+    print("\nCOVER LETTER")
+    print("-" * 70)
+    print(result["cover_letter"])
+
+    print("\n")
