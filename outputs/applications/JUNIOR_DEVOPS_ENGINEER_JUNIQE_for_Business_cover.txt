@@ -1,0 +1,25 @@
+Here's a sample ATS cover letter for the Junior DevOps Engineer position at JUNIQE for Business:
+
+Dear Hiring Manager,
+
+I am excited to apply for the Junior DevOps Engineer position at JUNIQE for Business, as advertised on [Job Board/Application Portal]. With a strong background in DevOps engineering, my passion for building scalable and secure software delivery pipelines aligns with JUNIQE's mission to [briefly mention the company's mission or values that resonate with you].
+
+As a DevOps Engineer with hands-on experience in designing and implementing end-to-end CI/CD pipelines, I am confident in my ability to drive automation and efficiency in the deployment of applications. My expertise in containerization using Docker, Kubernetes (EKS), and container orchestration has enabled me to optimize deployment speed and improve release reliability. I am also well-versed in security tools such as SonarQube and Trivy, which has strengthened my ability to uphold software integrity.
+
+In my current role as a DevOps Engineer at NovaPay, I have successfully designed and implemented a DevSecOps CI/CD pipeline for a containerized payment application, integrating security checks into every stage of the process. I have also architected a multi-region disaster recovery solution on AWS, ensuring high availability, business continuity, and rapid failover during regional outages. These experiences have not only honed my skills in DevOps engineering but also instilled in me a strong focus on delivering secure, scalable, and efficient software solutions.
+
+I am particularly drawn to JUNIQE's commitment to innovation and customer satisfaction. As someone who is passionate about AI-powered agents and intelligent automation, I believe that I would thrive in an environment that encourages experimentation and creativity. I am excited about the prospect of working with a talented team to drive business growth and deliver exceptional results.
+
+In addition to my technical skills and experience, I possess excellent communication and collaboration skills, which have been essential in my previous roles. I am confident that my passion for DevOps engineering, combined with my strong work ethic and ability to learn quickly, make me an ideal candidate for the Junior DevOps Engineer position at JUNIQE for Business.
+
+Thank you for considering my application. I would welcome the opportunity to discuss my qualifications further and explain in greater detail why I am the perfect fit for this role.
+
+Please find my resume attached for your review.
+
+Sincerely,
+
+Vikrant Kumar
+
+7643993774
+kumarvikrant722@gmail.com
+https://www.linkedin.com/in/vikrant-kumar722/

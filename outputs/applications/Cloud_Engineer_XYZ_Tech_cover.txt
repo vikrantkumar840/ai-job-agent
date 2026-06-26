@@ -1,0 +1,20 @@
+Here's a sample ATS cover letter tailored to the job AWS EKS Terraform:
+
+Dear Hiring Manager,
+
+I am excited to apply for the AWS EKS Terraform position at [Company Name]. As a DevOps Engineer with a strong background in building and deploying containerized applications on AWS EKS using Docker and Kubernetes, I am confident that my skills and experience align with the requirements of this role.
+
+With over 3 years of experience in designing and implementing robust CI/CD workflows with Jenkins and Terraform, I possess a deep understanding of infrastructure as code and the importance of automation in software development. My proficiency in Terraform allows me to automate infrastructure provisioning, scaling, and management, ensuring high availability and operational efficiency. Additionally, my experience with Prometheus and Grafana enables me to monitor and tune Kubernetes workloads, ensuring optimal performance and reliability.
+
+In my previous role at NovaPay, I successfully designed and implemented a multi-region disaster recovery solution on AWS using Terraform and AWS EKS. This project not only improved business continuity and high availability but also ensured rapid failover during regional outages. Similarly, I have experience in designing and implementing secure CI/CD pipelines using GitHub Actions, Docker, and ArgoCD, integrating security tools like SonarQube, Trivy, and Cosign to ensure robust software supply chain security.
+
+I am particularly drawn to this role at [Company Name] because of the opportunity to leverage my expertise in AWS EKS and Terraform to design and implement scalable, secure, and resilient infrastructure solutions. My passion for innovation and automation aligns with the company's commitment to delivering cutting-edge technology solutions.
+
+In addition to my technical skills and experience, I possess excellent communication and collaboration skills, which have been essential in my previous roles. I thrive in fast-paced environments and am comfortable working with cross-functional teams to achieve shared goals.
+
+Thank you for considering my application. I would welcome the opportunity to discuss my qualifications further and explore how I can contribute to [Company Name]'s success.
+
+Sincerely,
+Vikrant Kumar
+
+Note: This is a sample cover letter, and you should customize it to fit your specific experience and the job description. Remember to proofread your cover letter carefully before submitting it to ensure that it is error-free and effective.

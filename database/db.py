@@ -1,35 +1,41 @@
 import sqlite3
 
-conn = sqlite3.connect("database/jobs.db")
+DB_PATH = "database/app.db"
 
-cursor = conn.cursor()
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS jobs(
+def get_connection():
+    conn = sqlite3.connect(DB_PATH)
+    return conn
 
-id INTEGER PRIMARY KEY,
 
-title TEXT,
+def init_db():
+    conn = get_connection()
+    cursor = conn.cursor()
 
-company TEXT,
-
-score INTEGER,
-
-status TEXT
-)
-""")
-
-conn.commit()
-def save_job(title, company, score):
-
-    cursor.execute(
-        """
-        INSERT INTO jobs
-        (title,company,score,status)
-
-        VALUES(?,?,?,?)
-        """,
-        (title, company, score, "NEW")
-    )
+    with open("database/schema.sql", "r") as f:
+        cursor.executescript(f.read())
 
     conn.commit()
+    conn.close()
+
+
+def save_application(job, score, resume_path, cover_letter_path):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        INSERT INTO applications (
+            job_title, company, location, score, resume_path, cover_letter_path
+        )
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (
+        job["title"],
+        job["company"],
+        job.get("location", ""),
+        score,
+        resume_path,
+        cover_letter_path
+    ))
+
+    conn.commit()
+    conn.close()

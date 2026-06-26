@@ -1,0 +1,21 @@
+Subject: Application for DevOps Engineer Position at HPE
+
+Dear Hiring Manager,
+
+I am writing to express my interest in the DevOps Engineer position at Hewlett Packard Enterprise (HPE). As a highly motivated and skilled DevOps professional with experience in building and deploying containerized applications on AWS EKS using Docker and Kubernetes, I am confident that I would be a valuable addition to your team.
+
+With over 3 years of experience in the field, I have developed a strong foundation in Linux automation, system monitoring, and performance tuning with Prometheus and Grafana. My expertise in creating robust CI/CD workflows with Jenkins and Terraform, integrating security tools like SonarQube and Trivy, and managing Kubernetes workloads has enabled me to deliver high-quality software solutions that meet stringent security and performance requirements.
+
+As a DevOps Engineer, I have successfully designed and implemented end-to-end DevSecOps CI/CD pipelines for containerized payment applications using GitHub Actions, Docker, Amazon ECR, Amazon EKS, and ArgoCD. I have also established GitOps-based deployment workflows with ArgoCD and implemented Argo Rollouts to enable canary deployments, automated validation, and controlled rollback strategies.
+
+I am particularly drawn to this role at HPE because of the company's emphasis on innovation, diversity, and inclusion. As a DevOps Engineer, I believe that I would be able to contribute to the development of cutting-edge software solutions that meet the needs of a rapidly changing business landscape.
+
+In addition to my technical skills and experience, I possess excellent communication and collaboration skills, which have been essential in my previous roles. I am confident that I would be able to work effectively with cross-functional teams to identify and prioritize project requirements, develop and implement solutions, and ensure that projects are delivered on time and within budget.
+
+Thank you for considering my application. I would welcome the opportunity to discuss my qualifications further and explain in greater detail why I am the ideal candidate for this role. Please feel free to contact me at kumarvikrant722@gmail.com or 7643993774.
+
+Sincerely,
+
+Vikrant Kumar
+
+**SWEETLY**

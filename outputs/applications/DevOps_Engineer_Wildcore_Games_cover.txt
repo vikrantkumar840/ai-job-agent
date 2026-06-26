@@ -1,0 +1,27 @@
+Here's an ATS cover letter tailored to the DevOps Engineer position at Wildcore Games:
+
+Subject: Application for DevOps Engineer Position at Wildcore Games
+
+Dear Hiring Manager,
+
+I am excited to apply for the DevOps Engineer position at Wildcore Games, as advertised on [Job Board/Source]. With my experience as a DevOps Engineer and Payment Platform Specialist at ZeTheta pvt Ltd, I am confident that I can leverage my expertise to drive high-quality game development and deployment processes.
+
+As a seasoned DevOps professional, I have a proven track record of designing and implementing end-to-end CI/CD pipelines, containerized applications, and scalable infrastructure on AWS. My expertise in Jenkins, GitHub Actions, Docker, Kubernetes, and Terraform enables me to automate builds, deployments, and security checks, ensuring high availability, reliability, and rapid failover in case of regional outages.
+
+My recent experience at ZeTheta pvt Ltd has exposed me to the importance of security and compliance in software delivery. I have successfully integrated security tools like SonarQube and Trivy to uphold software integrity, and I am well-versed in cloud security best practices. I am also interested in developing AI-powered agents and integrating intelligent automation into cloud-native and DevSecOps ecosystems.
+
+I am particularly drawn to Wildcore Games' commitment to innovation and customer satisfaction. I am excited about the prospect of working with a talented team to deliver exceptional gaming experiences and contribute to the company's growth.
+
+In addition to my technical expertise and experience, I possess excellent communication and collaboration skills, which enable me to effectively work with cross-functional teams and stakeholders.
+
+Thank you for considering my application. I would welcome the opportunity to discuss my qualifications further and explore how I can contribute to Wildcore Games' success.
+
+Please find attached my resume for your review.
+
+Sincerely,
+Vikrant Kumar
+7643993774
+kumarvikrant722@gmail.com
+https://www.linkedin.com/in/vikrant-kumar722/
+
+Note: This cover letter is tailored to the job description and requirements, highlighting the candidate's relevant experience and skills. It also showcases the candidate's enthusiasm for the company and position, while maintaining a professional tone.

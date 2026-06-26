@@ -1,0 +1,20 @@
+Here's a cover letter for the AWS Infrastructure Engineer position at Securitas Technology:
+
+Dear Hiring Manager,
+
+I am excited to apply for the AWS Infrastructure Engineer position at Securitas Technology, where I can utilize my skills and experience to design and deploy scalable, secure, and high-performing infrastructure solutions on the AWS platform.
+
+With over 4 years of experience in DevOps engineering, I have developed a strong foundation in building and deploying containerized applications on AWS EKS using Docker and Kubernetes. My expertise in creating robust CI/CD workflows with Jenkins and Terraform has enabled me to integrate security tools like SonarQube and Trivy to uphold software integrity. Additionally, my experience with Linux automation, system monitoring, and performance tuning with Prometheus and Grafana has ensured high availability and operational efficiency.
+
+In my current role at ZeTheta pvt Ltd, I have designed and implemented a DevSecOps CI/CD pipeline for a containerized payment application using GitHub Actions, Docker, Amazon ECR, Amazon EKS, and ArgoCD. I have also integrated SonarQube for static code analysis, Trivy for container vulnerability assessment, and Cosign for container image signing and verification to strengthen software supply chain security.
+
+Furthermore, I have architected a multi-region disaster recovery solution on AWS for a payment platform to ensure high availability, business continuity, and rapid failover during regional outages. I have automated infrastructure provisioning using Terraform and managed Amazon EKS environments with optimized node group scaling and networking configurations.
+
+I am particularly drawn to this role at Securitas Technology because of the opportunity to work with a team that shares my passion for innovation and excellence. My interest in developing AI-powered agents and integrating intelligent automation into cloud-native and DevSecOps ecosystems aligns with the company's goals and values.
+
+In addition to my technical skills and experience, I possess excellent communication and collaboration skills, which have been essential in my previous roles. I am confident that my skills and experience make me an ideal candidate for this position.
+
+Thank you for considering my application. I would welcome the opportunity to discuss my qualifications further and how I can contribute to the success of Securitas Technology.
+
+Sincerely,
+Vikrant Kumar

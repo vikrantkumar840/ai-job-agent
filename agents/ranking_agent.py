@@ -1,10 +1,12 @@
 import json
 import re
-
+from functools import lru_cache
 from config.llm import llm
 from resumes.profile import PROFILE
 
-
+@lru_cache(maxsize=50)
+def cached_llm(prompt):
+    return llm.invoke(prompt)
 def analyze_job(job):
 
     prompt = f"""
@@ -34,7 +36,7 @@ Example:
 }}
 """
 
-    response = llm.invoke(prompt)
+    response = cached_llm(prompt)
 
     text = response.content.strip()
 

@@ -1,0 +1,36 @@
+Here's a sample ATS cover letter based on your resume and the job description for a DevOps Junior Engineer at The Clearing House:
+
+[Your Name]
+[Address]
+[City, State, Zip]
+[Phone Number]
+[Email Address]
+[LinkedIn Profile URL]
+
+[Date]
+
+Hiring Manager,
+DevOps Team,
+The Clearing House,
+[Address]
+[City, State, Zip]
+
+Dear Hiring Manager,
+
+I am excited to apply for the DevOps Junior Engineer position at The Clearing House. As a DevOps Engineer with experience in building and deploying containerized applications on AWS EKS using Docker and Kubernetes, I am confident that I have the skills and expertise to contribute to your team's success.
+
+With a strong foundation in Linux automation, system monitoring, and performance tuning, I have successfully designed and implemented end-to-end DevSecOps CI/CD pipelines, integrating security tools like SonarQube and Trivy to uphold software integrity. My proficiency in Terraform and AWS services has enabled me to automate infrastructure provisioning and manage Amazon EKS environments with optimized node group scaling and networking configurations.
+
+I am particularly drawn to this role at The Clearing House because of the opportunity to work with a team that values innovation and collaboration. As a DevOps Engineer, I have a passion for developing and implementing automated solutions that improve deployment efficiency and reduce downtime. My experience with Jenkins, GitHub Actions, Docker, and Kubernetes has allowed me to design and implement scalable and secure software delivery pipelines.
+
+One of my most notable achievements was designing and implementing a multi-region disaster recovery solution on AWS for a payment platform, ensuring high availability and business continuity. I also successfully established a GitOps-based deployment workflow with ArgoCD and implemented Argo Rollouts to enable canary deployments, automated validation, and controlled rollback strategies.
+
+I am excited about the opportunity to bring my skills and experience to The Clearing House and contribute to the success of the DevOps team. Thank you for considering my application. I have attached my resume for your review. I look forward to discussing my qualifications further.
+
+Sincerely,
+
+Vikrant Kumar
+
+7643993774
+kumarvikrant722@gmail.com
+https://www.linkedin.com/in/vikrant-kumar722/

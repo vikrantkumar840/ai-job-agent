@@ -1,8 +1,13 @@
 from tools.job_search import search_jobs
 from workflows.graph import workflow
+from database.db import init_db
+
+
+init_db()
 
 jobs = search_jobs()
 
+jobs = search_jobs()[:3]   # LIMIT TO 3 JOBS ONLY
 print("\nTop Jobs\n")
 
 for job in jobs:
@@ -13,21 +18,4 @@ for job in jobs:
 
     result = workflow.invoke({"job": job})
 
-    analysis = result["analysis"]
-
-    print("\nATS ANALYSIS")
-    print("-" * 70)
-    print("Score:", analysis["score"])
-    print("Matched Skills:", ", ".join(analysis["matched_skills"]))
-    print("Missing Skills:", ", ".join(analysis["missing_skills"]))
-    print("Recommendation:", analysis["recommendation"])
-
-    print("\nTAILORED RESUME")
-    print("-" * 70)
-    print(result["resume"])
-
-    print("\nCOVER LETTER")
-    print("-" * 70)
-    print(result["cover_letter"])
-
-    print("\n")
+    print("\nSAVED:", result["saved"])

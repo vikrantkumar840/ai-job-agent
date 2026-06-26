@@ -1,0 +1,19 @@
+Here's a cover letter tailored to the DevOps Engineer position at ClassWallet:
+
+Dear Hiring Manager,
+
+I'm writing to express my interest in the DevOps Engineer position at ClassWallet. As a seasoned DevOps professional with expertise in building and deploying containerized applications on AWS EKS using Docker and Kubernetes, I'm confident that my skills and experience align with the requirements of this role.
+
+With a strong foundation in creating robust CI/CD workflows with Jenkins and Terraform, integrating security tools like SonarQube and Trivy, and ensuring high availability and operational efficiency through Linux automation, system monitoring, and performance tuning, I'm well-equipped to contribute to the development and deployment of ClassWallet's software applications.
+
+In my current role at NovaPay, I've had the opportunity to design and implement an end-to-end DevSecOps CI/CD pipeline for a containerized payment application using GitHub Actions, Docker, Amazon ECR, Amazon EKS, and ArgoCD. I've also integrated SonarQube for static code analysis, Trivy for container vulnerability assessment, and Cosign for container image signing and verification to strengthen software supply chain security.
+
+I'm particularly drawn to this role at ClassWallet because of the opportunity to work on a team that shares my passion for innovation and commitment to excellence. As a DevOps Engineer, I'm eager to collaborate with developers, engineers, and other stakeholders to design, implement, and deploy scalable and secure software solutions that meet the needs of ClassWallet's customers.
+
+My project experience, including the implementation of an end-to-end CI/CD pipeline with Jenkins and SonarQube, and the design of a multi-region disaster recovery solution on AWS for a payment platform, demonstrate my ability to work effectively in a fast-paced environment and deliver high-quality results under tight deadlines.
+
+I'm excited about the prospect of joining the ClassWallet team and contributing my skills and experience to the success of the company. Thank you for considering my application. I look forward to the opportunity to discuss this position further.
+
+Sincerely,
+
+Vikrant Kumar

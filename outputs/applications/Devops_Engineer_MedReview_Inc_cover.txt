@@ -1,0 +1,23 @@
+Here's a sample ATS cover letter based on the provided resume:
+
+Dear Hiring Manager at MedReview Inc.,
+
+I'm excited to apply for the DevOps Engineer position at MedReview Inc. With my experience in designing and implementing secure, automated, and scalable software delivery pipelines, I'm confident that I can make a valuable contribution to your team.
+
+As a seasoned DevOps Engineer, I've had the opportunity to work with various tools and technologies, including AWS, Docker, Kubernetes, Jenkins, and Terraform. My most recent internship at Zetheta Algorithms Private Limited involved designing and implementing an end-to-end DevSecOps CI/CD pipeline for a containerized payment application using GitHub Actions, Docker, Amazon ECR, Amazon EKS, and ArgoCD. This experience not only deepened my understanding of secure software delivery but also honed my skills in integrating security tools like SonarQube and Trivy to uphold software integrity.
+
+In my previous projects, I've successfully implemented CI/CD pipelines using Jenkins and SonarQube, resulting in a 90% reduction in build and deployment cycle time. I've also designed and implemented a multi-region disaster recovery solution on AWS for a payment platform, ensuring high availability, business continuity, and rapid failover during regional outages.
+
+I'm particularly drawn to MedReview Inc.'s commitment to innovation and customer satisfaction. As a DevOps Engineer, I believe that my skills in automation, monitoring, and performance tuning using Prometheus and Grafana will enable me to contribute to the company's goals.
+
+I'm excited about the prospect of working with a talented team to develop and deploy cloud-native applications. I'm confident that my passion for intelligent automation and AI-powered agents will enable me to make a meaningful impact at MedReview Inc.
+
+Thank you for considering my application. I've attached my resume for your review. I look forward to discussing my qualifications further.
+
+Sincerely,
+Vikrant Kumar
+kumarvikrant722@gmail.com
+https://www.linkedin.com/in/vikrant-kumar722/
+7643993774
+
+Note: This cover letter is tailored to the provided resume and is intended to demonstrate the candidate's relevant experience and skills. It's essential to customize the letter for each job application and highlight the candidate's achievements and qualifications that align with the job requirements.
