@@ -4,8 +4,7 @@ import requests
 import os
 
 DB = "database/app.db"
-API = "http://44.203.73.54:8000"
-
+API = "http://127.0.0.1:8000"
 
 def get_applications():
     if not os.path.exists(DB):

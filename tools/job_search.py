@@ -12,10 +12,9 @@ def is_relevant(job):
     text = (job.get("title", "") + " " + job.get("description", "")).lower()
     return any(k in text for k in KEYWORDS)
 
-def search_jobs():
+def search_jobs(role: str = "", city: str = ""):
     jobs = []
 
-    # RemoteOK
     try:
         res = requests.get("https://remoteok.com/api", timeout=10)
         data = res.json()
@@ -29,18 +28,20 @@ def search_jobs():
             }
 
             if is_relevant(j):
-                jobs.append(j)
 
-    except:
-        pass
+                # apply filters safely
+                if role.lower() in j["title"].lower() or role == "":
+                    if city.lower() in j["location"].lower() or city == "":
+                        jobs.append(j)
 
-    # LinkedIn
+    except Exception as e:
+        print("RemoteOK error:", e)
+
     try:
-        jobs += search_linkedin_jobs("devops OR cloud engineer OR aws")
-    except:
-        pass
+        jobs += search_linkedin_jobs(role or "devops")
+    except Exception as e:
+        print("LinkedIn error:", e)
 
-    # FINAL HARD FILTER (IMPORTANT)
     jobs = [j for j in jobs if is_relevant(j)]
 
-    return jobs[:5]
+    return jobs[:10]

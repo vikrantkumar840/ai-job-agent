@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import requests
 
-API = "http://44.203.73.54:8000"
-
+import os
+API = os.getenv("API_URL")
 st.set_page_config(
     page_title="AI Job Agent",
     page_icon="🤖",

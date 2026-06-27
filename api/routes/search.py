@@ -2,15 +2,12 @@ from fastapi import APIRouter
 from api.models.search import JobSearchRequest
 from tools.job_search import search_jobs
 
-router = APIRouter(prefix="/jobs", tags=["Jobs"])
-
+router = APIRouter()
 
 @router.post("/")
-def get_jobs(request: JobSearchRequest):
+def search(request: JobSearchRequest):
 
-    jobs = search_jobs(
+    return search_jobs(
         role=request.role,
         city=request.city
     )
-
-    return jobs
