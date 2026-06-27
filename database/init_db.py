@@ -1,15 +1,11 @@
 import sqlite3
 import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, "app.db")
-
-
-def get_connection():
-    return sqlite3.connect(DB_PATH)
-
+DB_PATH = "database/app.db"
 
 def init_db():
+    os.makedirs("database", exist_ok=True)
+
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
@@ -28,7 +24,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 if __name__ == "__main__":
     init_db()
-    print("DB initialized successfully:", DB_PATH)
+    print("DB initialized successfully")

@@ -1,21 +1,21 @@
+from concurrent.futures import ThreadPoolExecutor
 from tools.job_search import search_jobs
 from workflows.graph import workflow
-from database.db import init_db
-
-
-init_db()
 
 jobs = search_jobs()
 
-jobs = search_jobs()[:3]   # LIMIT TO 3 JOBS ONLY
 print("\nTop Jobs\n")
 
-for job in jobs:
+def process(job):
+    result = workflow.invoke({"job": job})
 
     print("=" * 70)
     print(job["title"])
     print(job["company"])
+    print(result["analysis"])
 
-    result = workflow.invoke({"job": job})
+    return result
 
-    print("\nSAVED:", result["saved"])
+
+with ThreadPoolExecutor(max_workers=3) as executor:
+    executor.map(process, jobs)

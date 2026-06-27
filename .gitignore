@@ -1,17 +1,21 @@
-venv/
-.env
+# Python
 __pycache__/
 *.pyc
-*.log
+venv/
 
+# Database
+*.db
+database/app.db
+
+# Outputs (generated AI files)
+outputs/
+generated/
+
+# Streamlit
+.streamlit/
+
+# Logs
 logs/
 
-jobs/raw/*
-jobs/matched/*
-jobs/applied/*
-
-cover_letters/*
-resumes/generated/*
-
-.vscode/
-.idea/
+# OS
+.DS_Store
