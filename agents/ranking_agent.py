@@ -1,61 +1,34 @@
-import json
-import re
-from functools import lru_cache
-from config.llm import llm
-from resumes.profile import PROFILE
-from config.llm import invoke_llm
+# agents/ranking_agent.py
 
-@lru_cache(maxsize=50)
-def cached_llm(prompt):
-    return llm.invoke(prompt)
-def analyze_job(job):
+def analyze_job(payload: dict):
 
-    prompt = f"""
-You are an ATS Resume Scoring AI.
+    profile = payload.get("profile", {})
+    jobs = payload.get("jobs", [])
 
-Candidate Resume:
-{PROFILE}
+    skills = set([s.lower() for s in profile.get("skills", [])])
 
-Job Description:
-{job["description"]}
+    ranked = []
 
-Compare the resume with the job.
+    for job in jobs:
+        text = (job.get("title", "") + " " + job.get("description", "")).lower()
 
-Return ONLY a JSON object.
+        score = 0
+        matched = []
 
-Do NOT explain.
-Do NOT write markdown.
-Do NOT wrap inside ```json.
+        for skill in skills:
+            if skill in text:
+                score += 20
+                matched.append(skill)
 
-Example:
+        ranked.append({
+            "job": job,
+            "score": score,
+            "matched_skills": matched
+        })
 
-{{
-    "score":95,
-    "matched_skills":["AWS","Terraform"],
-    "missing_skills":["Python"],
-    "recommendation":"Excellent match."
-}}
-"""
+    ranked = sorted(ranked, key=lambda x: x["score"], reverse=True)
 
-    response = invoke_llm(prompt)
-
-    text = response.content.strip()
-
-    match = re.search(r"\{.*\}", text, re.DOTALL)
-
-    if match:
-        text = match.group(0)
-
-    try:
-        return json.loads(text)
-
-    except Exception as e:
-        print(e)
-        print(text)
-
-        return {
-            "score": 0,
-            "matched_skills": [],
-            "missing_skills": [],
-            "recommendation": "JSON Parsing Failed"
-        }
+    return {
+        "score": ranked[0]["score"] if ranked else 0,
+        "ranked_jobs": [r["job"] for r in ranked]
+    }

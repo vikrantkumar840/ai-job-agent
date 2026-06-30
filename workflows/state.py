@@ -1,9 +1,21 @@
-from typing import TypedDict, Dict, Any
+from typing import TypedDict, Dict, Any, List
 
 
 class JobState(TypedDict):
-    job: Dict[str, Any]
-    analysis: Dict[str, Any]
+    resume_text: str
+
+    profile: Dict[str, Any]
+
+    preferences: Dict[str, Any]
+
+    chat_history: List[Dict[str, str]]
+
+    jobs: List[Dict[str, Any]]
+
+    ranked_jobs: List[Dict[str, Any]]
+
+    selected_jobs: List[Dict[str, Any]]
+
     resume: str
+
     cover_letter: str
-    saved: Dict[str, Any]

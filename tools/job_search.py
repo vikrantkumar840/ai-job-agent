@@ -1,47 +1,74 @@
 import requests
+
 from browser.linkedin import search_linkedin_jobs
 
+from vector.indexer import index_jobs
+from vector.retriever import search_jobs as vector_search
+
+
 KEYWORDS = [
-    "devops", "devops engineer",
-    "cloud", "aws",
-    "terraform", "kubernetes",
-    "docker", "sre", "platform engineer"
+    "devops",
+    "devops engineer",
+    "aws",
+    "terraform",
+    "docker",
+    "kubernetes",
+    "cloud",
+    "sre",
 ]
 
+
 def is_relevant(job):
-    text = (job.get("title", "") + " " + job.get("description", "")).lower()
+    text = (
+        job.get("title", "") +
+        " " +
+        job.get("description", "")
+    ).lower()
+
     return any(k in text for k in KEYWORDS)
 
-def search_jobs(role: str = "", city: str = ""):
+
+def search_jobs(role: str, city: str = ""):
+
     jobs = []
 
+    # RemoteOK
     try:
-        res = requests.get("https://remoteok.com/api", timeout=10)
-        data = res.json()
 
-        for job in data[1:20]:
-            j = {
-                "title": job.get("position", ""),
-                "company": job.get("company", ""),
-                "description": job.get("description", ""),
-                "location": job.get("location", "Remote")
+        response = requests.get(
+            "https://remoteok.com/api",
+            timeout=10,
+        )
+
+        data = response.json()
+
+        for item in data[1:]:
+
+            job = {
+                "title": item.get("position", ""),
+                "company": item.get("company", ""),
+                "description": item.get("description", ""),
+                "location": item.get("location", "Remote"),
             }
 
-            if is_relevant(j):
-
-                # apply filters safely
-                if role.lower() in j["title"].lower() or role == "":
-                    if city.lower() in j["location"].lower() or city == "":
-                        jobs.append(j)
+            if is_relevant(job):
+                jobs.append(job)
 
     except Exception as e:
-        print("RemoteOK error:", e)
+        print("RemoteOK:", e)
 
+    # LinkedIn
     try:
-        jobs += search_linkedin_jobs(role or "devops")
+        jobs.extend(search_linkedin_jobs(role or "devops"))
     except Exception as e:
-        print("LinkedIn error:", e)
+        print("LinkedIn:", e)
 
-    jobs = [j for j in jobs if is_relevant(j)]
+    jobs = jobs[:30]
 
-    return jobs[:10]
+    # Index all jobs into Qdrant
+    index_jobs(jobs)
+
+    # Perform semantic search
+    query = f"{role} {city}".strip()
+
+    return vector_search(query, limit=5)

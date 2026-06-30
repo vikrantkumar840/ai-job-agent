@@ -1,19 +1,57 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 export default function BackgroundGlow() {
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      
-      {/* Base dark gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#05060a] via-[#070a12] to-[#05060a]" />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
 
-      {/* Animated glow blobs */}
-      <div className="absolute w-[700px] h-[700px] bg-cyan-500/20 blur-[180px] rounded-full top-[-250px] left-[-200px] animate-pulse" />
+      {/* Left Glow */}
+      <motion.div
+        animate={{
+          opacity: [0.25, 0.55, 0.25],
+          scale: [1, 1.15, 1],
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="
+          absolute
+          -top-48
+          -left-48
+          w-[700px]
+          h-[700px]
+          rounded-full
+          bg-cyan-500/30
+          blur-[180px]
+        "
+      />
 
-      <div className="absolute w-[700px] h-[700px] bg-emerald-500/20 blur-[180px] rounded-full bottom-[-250px] right-[-200px] animate-pulse" />
+      {/* Right Glow */}
+      <motion.div
+        animate={{
+          opacity: [0.20, 0.45, 0.20],
+          scale: [1.1, 0.95, 1.1],
+        }}
+        transition={{
+          duration: 6,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="
+          absolute
+          -bottom-48
+          -right-48
+          w-[650px]
+          h-[650px]
+          rounded-full
+          bg-emerald-500/25
+          blur-[180px]
+        "
+      />
 
-      {/* Soft vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.6)_100%)]" />
     </div>
   );
 }

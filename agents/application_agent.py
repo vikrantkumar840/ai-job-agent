@@ -42,6 +42,8 @@ def save_application_artifacts(job, analysis, resume, cover_letter):
     conn.close()
 
     return {
+        "job": job["title"],
+        "company": job["company"],
         "resume_path": resume_path,
         "cover_letter_path": cover_path
-    }
+}

@@ -1,21 +1,14 @@
 from fastapi import FastAPI
 
-from api.routes import jobs
-from api.routes import applications
-from api.routes import settings
-app = FastAPI(
-    title="AI Job Agent API",
-    version="1.0.0"
-)
+from api.routes.agent import router as agent_router
+from api.routes.orchestrator import router as orchestrator_router
+from vector.init_db import init_vector_db
 
-app.include_router(jobs.router)
-app.include_router(applications.router)
-app.include_router(settings.router)
-app.include_router(jobs.router)
+app = FastAPI()
 
-@app.get("/")
-def root():
-    return {
-        "status": "running",
-        "service": "AI Job Agent API"
-    }
+@app.on_event("startup")
+def startup_event():
+    init_vector_db()
+
+app.include_router(agent_router)
+app.include_router(orchestrator_router)

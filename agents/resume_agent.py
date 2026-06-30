@@ -1,32 +1,52 @@
 import os
-from dotenv import load_dotenv
 from langchain_groq import ChatGroq
-from tools.resume_parser import load_resume
-from config.llm import invoke_llm
 
-load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
+
+if not api_key:
+    raise ValueError("GROQ_API_KEY is missing. Please set environment variable.")
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",
-    api_key=os.getenv("GROQ_API_KEY")
+    api_key=api_key
 )
 
-PROFILE = load_resume("resumes/base/Vikrant_devops-14-06-2026.pdf")
 
+def generate_resume(profile, selected_jobs, analysis=None, **kwargs):
 
-def generate_resume(job):
+    # -------------------------
+    # SAFE JOB PICK
+    # -------------------------
+    job = selected_jobs[0] if selected_jobs else {}
 
+    # -------------------------
+    # PROMPT (STRICT + CLEAN)
+    # -------------------------
     prompt = f"""
-Rewrite this resume for job:
+You are an expert ATS resume generator.
 
-Resume:
-{PROFILE}
+RULES:
+- Do NOT invent experience
+- Use ONLY given profile data
+- Tailor resume for the target job
+- Output MUST be valid JSON only
+- No markdown, no explanation, no code blocks
 
-Job:
-{job["description"]}
+PROFILE:
+{profile}
 
-Return ATS optimized markdown resume only.
+TARGET JOB:
+{job}
+
+Return JSON in this format:
+{{
+  "summary": "...",
+  "skills": [],
+  "tailored_points": [],
+  "recommendation": ""
+}}
 """
 
     response = llm.invoke(prompt)
+
     return response.content
