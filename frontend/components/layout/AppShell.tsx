@@ -5,79 +5,63 @@ import BackgroundGlow from "../effects/BackgroundGlow";
 import HeroVisual from "../hero/HeroVisual";
 import SmoothScroll from "./SmoothScroll";
 import CountUp from "react-countup";
+import { useRouter } from "next/navigation";
 
 export default function AppShell() {
+  const router = useRouter();
+
   return (
     <main className="min-h-screen text-white relative overflow-hidden">
 
-      {/* BACKGROUND */}
       <BackgroundGlow />
-
-      {/* Smooth Scroll */}
       <SmoothScroll />
-
-      {/* NAVBAR */}
       <Navbar />
 
-      {/* HERO */}
       <section className="max-w-7xl mx-auto px-10 pt-40 relative z-10">
         <div className="grid lg:grid-cols-2 items-center gap-24">
-          {/* LEFT SIDE */}
-          <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-xs text-cyan-300">
-              ⚡ AI Powered Job Engine
-            </div>
 
-            <h1 className="text-7xl font-extrabold leading-[1.05] tracking-tight">
-              Find.
-              <br />
-              Match.
-              <br />
-              Apply.
+          <div className="space-y-8">
+
+            <h1 className="text-7xl font-extrabold">
+              Find.<br />Match.<br />Apply.
             </h1>
 
-            <p className="text-white/60 text-lg max-w-md leading-relaxed">
-              One Resume AI system that analyzes your profile, matches
-              high-paying jobs, and auto-applies in seconds.
+            <p className="text-white/60">
+              AI-powered job engine that analyzes your resume and builds your career path.
             </p>
 
+            {/* 🔥 ONLY ENTRY POINT */}
             <div className="flex gap-4">
-              <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold hover:scale-105 transition">
-                Start Searching 🚀
+
+              <button
+                onClick={() => {
+			console.log("BUTTON CLICKED");
+			alert("BUTTON CLICKED");
+			router.push("/dashboard");
+		}}
+                className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold"
+              >
+                Start Your Journey
               </button>
 
-              <button className="px-8 py-4 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition">
-                View Demo
+              <button
+	      	onClick={() => {
+		   console.log("BUTTON CLICKED");
+		   alert("BUTTON CLICKED");
+		   router.push("/dashboard");
+		}}
+		className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold"
+
+	      >
+	      RESUME
               </button>
+
             </div>
 
-            {/* STATS */}
-            <div className="flex gap-10 pt-8">
-              <div>
-                <p className="text-3xl font-bold text-white">
-                  <CountUp end={10000} duration={2} separator="," />+
-                </p>
-                <p className="text-white/50 text-sm">Jobs Matched</p>
-              </div>
-
-              <div>
-                <p className="text-3xl font-bold text-white">
-                  <CountUp end={95} duration={2} />%
-                </p>
-                <p className="text-white/50 text-sm">Accuracy</p>
-              </div>
-
-              <div>
-                <p className="text-3xl font-bold text-white">1 Click</p>
-                <p className="text-white/50 text-sm">Apply System</p>
-              </div>
-            </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="flex justify-center">
-            <HeroVisual />
-          </div>
+          <HeroVisual />
+
         </div>
       </section>
     </main>

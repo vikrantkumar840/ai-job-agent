@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { uploadResume, extractProfile, startOrchestrator } from "@/lib/api";
+import { uploadResume} from "@/lib/api";
 
 export default function ResumePage() {
   const [file, setFile] = useState<File | null>(null);

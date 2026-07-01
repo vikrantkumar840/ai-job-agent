@@ -1,33 +1,45 @@
-const API_URL = "http://3.223.73.199:8000";// change to EC2 IP in prod
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://3.223.73.199:8000";
 
+/**
+ * Upload resume PDF
+ */
 export async function uploadResume(file: File) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${API_URL}/resume/upload`, {
+  const res = await fetch(`${BASE_URL}/resume/upload`, {
     method: "POST",
     body: formData,
   });
 
-  return res.json();
-}
-
-export async function extractProfile(resume_text: string) {
-  const res = await fetch(`${API_URL}/profile/extract`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ resume_text }),
-  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Upload failed");
+  }
 
   return res.json();
 }
 
-export async function startOrchestrator(data: any) {
-  const res = await fetch(`${API_URL}/orchestrator/start`, {
+/**
+ * Search jobs using resume text
+ */
+export async function searchJobs(resumeText: string) {
+  const res = await fetch(`${BASE_URL}/search/jobs`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      resume_text: resumeText,
+    }),
   });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Job search failed");
+  }
 
   return res.json();
 }

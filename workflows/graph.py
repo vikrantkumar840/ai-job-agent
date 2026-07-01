@@ -9,18 +9,31 @@ from vector.retriever import search_jobs as vector_search
 # RANK NODE
 # ----------------------------
 def rank_jobs_node(state):
-    profile = state["profile"]
 
-    query = f"{profile['summary']} {profile['skills']}"
+    profile = state.get("profile", {})
+    resume_text = state.get("resume_text", "")
+
+    summary = profile.get("summary", "")
+    skills = profile.get("skills", [])
+
+    query = f"{summary} {' '.join(skills)}"
+
+    # Fallback if profile is empty
+    if not query.strip():
+        query = resume_text
+
+    print("=" * 80)
+    print("Vector Search Query:")
+    print(query)
+    print("=" * 80)
 
     ranked = vector_search(query)
 
     return {
         **state,
         "ranked_jobs": ranked,
-        "selected_jobs": ranked[:3]
+        "selected_jobs": ranked[:3],
     }
-
 # ----------------------------
 # RESUME NODE
 # ----------------------------

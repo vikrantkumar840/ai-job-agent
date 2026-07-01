@@ -31,8 +31,9 @@ def start_agent(payload: dict):
     print(result)
 
     return {
-            "jobs": state["jobs"],
-            "ranked_jobs": result.get("ranked_jobs", []),
-            "resume": result.get("resume"),
-            "cover_letter": result.get("cover_letter")
-            }
+    "jobs": result.get("jobs", []),
+    "ranked_jobs": result.get("ranked_jobs", []),
+    "selected_jobs": result.get("selected_jobs", []),
+    "resume": result.get("resume"),
+    "cover_letter": result.get("cover_letter"),
+}

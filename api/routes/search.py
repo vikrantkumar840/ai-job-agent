@@ -1,13 +1,11 @@
+# api/routes/search.py
+
 from fastapi import APIRouter
-from api.models.search import JobSearchRequest
-from tools.job_search import search_jobs
+from vector.retriever import search_jobs
 
 router = APIRouter()
 
-@router.post("/")
-def search(request: JobSearchRequest):
-
-    return search_jobs(
-        role=request.role,
-        city=request.city
-    )
+@router.post("/jobs")
+def search_jobs_api(payload: dict):
+    query = payload.get("query", "")
+    return search_jobs(query)

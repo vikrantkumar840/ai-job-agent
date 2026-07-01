@@ -22,9 +22,8 @@ export default function Navbar() {
 
           <div className="flex gap-10 text-sm text-white/70">
             <Link href="/">Home</Link>
-            <Link href="/search">Search</Link>
             <Link href="/dashboard">Dashboard</Link>
-            <Link href="/analytics">Analytics</Link>
+	    <Link href="/workspace">Workspace</Link>
           </div>
 
         </div>
