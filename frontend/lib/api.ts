@@ -43,3 +43,27 @@ export async function searchJobs(resumeText: string) {
 
   return res.json();
 }
+
+/**
+ * Run AI Orchestrator
+ */
+export async function runOrchestrator(payload: {
+  resume_text: string;
+  profile: any;
+  preferences: any;
+}) {
+  const res = await fetch(`${BASE_URL}/orchestrator/start`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Failed to run orchestrator");
+  }
+
+  return res.json();
+}

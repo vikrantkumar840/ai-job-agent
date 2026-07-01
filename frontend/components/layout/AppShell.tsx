@@ -35,9 +35,7 @@ export default function AppShell() {
 
               <button
                 onClick={() => {
-			console.log("BUTTON CLICKED");
-			alert("BUTTON CLICKED");
-			router.push("/dashboard");
+			router.push("/workflow");
 		}}
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold"
               >
@@ -45,13 +43,7 @@ export default function AppShell() {
               </button>
 
               <button
-	      	onClick={() => {
-		   console.log("BUTTON CLICKED");
-		   alert("BUTTON CLICKED");
-		   router.push("/dashboard");
-		}}
-		className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-black font-bold"
-
+	      	
 	      >
 	      RESUME
               </button>
