@@ -3,7 +3,10 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { uploadResume } from "@/lib/api";
+import {
+  uploadResume,
+  runOrchestrator,
+} from "@/lib/api";
 
 export default function UploadResume() {
   const router = useRouter();
@@ -12,11 +15,12 @@ export default function UploadResume() {
 
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
-  const handleUpload = async () => {
+  async function handleUpload() {
     if (!file) {
-      setError("Please select a PDF resume.");
+      setError("Please select a PDF.");
       return;
     }
 
@@ -24,36 +28,83 @@ export default function UploadResume() {
       setLoading(true);
       setError("");
 
-      const res = await uploadResume(file);
+      setStatus("Uploading resume...");
 
-      localStorage.setItem("resume_uploaded", "true");
-      localStorage.setItem("resume_text", res.resume_text);
+      const upload = await uploadResume(file);
 
-      // Reset file input
-      setFile(null);
+      localStorage.setItem(
+        "resume_text",
+        upload.resume_text
+      );
+
+      localStorage.removeItem("workflow_result");
+
+      setStatus("Running AI Agent...");
+
+      const workflow = await runOrchestrator({
+        resume_text: upload.resume_text,
+        profile: {},
+        preferences: {},
+      });
+      console.log("===== WORKFLOW RESPONSE =====");
+      console.log(workflow);
+      
+      console.log("Selected Jobs:");
+      
+      console.log(workflow.selected_jobs);
+
+
+      localStorage.setItem(
+  
+	      "workflow_result",
+  
+	      JSON.stringify(workflow)
+
+      );
+
+
+      console.log("Saved to localStorage:");
+
+      console.log(
+  
+	      JSON.parse(localStorage.getItem("workflow_result")!)
+
+      );
+      localStorage.setItem(
+        "workflow_result",
+        JSON.stringify(workflow)
+      );
+
+      localStorage.setItem(
+        "resume_uploaded",
+        "true"
+      );
+
+      setStatus("Completed");
 
       if (inputRef.current) {
         inputRef.current.value = "";
       }
 
-      // Go to dashboard
-      router.push("/dashboard");
+      setFile(null);
+
+      router.replace("/dashboard");
     } catch (err: any) {
-      setError(err?.message || "Upload failed.");
+      setError(err.message || "Workflow failed");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0b10] p-8 shadow-2xl">
+    <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0b10] p-8">
 
-      <h2 className="text-2xl font-semibold text-white mb-2">
-        Upload Your Resume
+      <h2 className="text-2xl font-semibold mb-2">
+        Upload Resume
       </h2>
 
-      <p className="text-white/60 text-sm mb-6">
-        Upload your latest resume in PDF format to begin your AI job search.
+      <p className="text-white/60 mb-6">
+        Upload your latest resume.
       </p>
 
       <input
@@ -61,22 +112,19 @@ export default function UploadResume() {
         type="file"
         accept="application/pdf"
         onChange={(e) => {
-          const selectedFile = e.target.files?.[0] || null;
-
-          setFile(selectedFile);
+          setFile(e.target.files?.[0] || null);
           setError("");
         }}
-        className="block w-full text-sm text-white file:mr-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:px-4 file:py-2 file:font-medium file:text-black hover:file:bg-cyan-400 cursor-pointer"
       />
 
-      {file && (
-        <p className="mt-3 text-sm text-green-400">
-          Selected: {file.name}
+      {status && (
+        <p className="mt-4 text-cyan-400">
+          {status}
         </p>
       )}
 
       {error && (
-        <p className="mt-3 text-sm text-red-400">
+        <p className="mt-4 text-red-400">
           {error}
         </p>
       )}
@@ -84,10 +132,11 @@ export default function UploadResume() {
       <button
         onClick={handleUpload}
         disabled={loading || !file}
-        className="mt-6 w-full rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 py-3 font-semibold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="mt-6 w-full rounded-xl bg-cyan-500 py-3 text-black font-semibold"
       >
-        {loading ? "Uploading Resume..." : "Upload & Continue"}
+        {loading ? "AI is Working..." : "Upload & Start AI"}
       </button>
+
     </div>
   );
 }

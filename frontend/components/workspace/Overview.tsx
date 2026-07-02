@@ -11,6 +11,9 @@ export default function Overview({
 }: OverviewProps) {
   const rankedJobs = data?.ranked_jobs ?? [];
   const selectedJobs = data?.selected_jobs ?? [];
+  console.log("===== OVERVIEW DATA =====");
+  console.log(data);
+  console.log(selectedJobs);
 
   return (
     <div className="space-y-8">

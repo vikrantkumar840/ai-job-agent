@@ -11,73 +11,19 @@ import CoverLetter from "@/components/workspace/CoverLetter";
 import Interview from "@/components/workspace/Interview";
 import Results from "@/components/workspace/Results";
 
-import { runOrchestrator } from "@/lib/api";
-
 export default function DashboardPage() {
   const [active, setActive] = useState("Overview");
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
   const [result, setResult] = useState<any>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("workflow_result");
-
-    if (saved) {
-      setResult(JSON.parse(saved));
-    }
+	  const saved = localStorage.getItem("workflow_result");
+	  console.log("===== DASHBOARD LOADED =====");
+	  if (saved) {
+		  const parsed = JSON.parse(saved);
+		  console.log(parsed);
+		  setResult(parsed);
+	  }
   }, []);
-
-  async function handleStartAI() {
-    try {
-      setLoading(true);
-      setError("");
-
-      const resumeText = localStorage.getItem("resume_text");
-
-      if (!resumeText) {
-        setError("Resume not found.");
-        return;
-      }
-
-      const data = await runOrchestrator({
-        resume_text: resumeText,
-        profile: {},
-        preferences: {},
-      });
-
-      console.log("===== ORCHESTRATOR RESPONSE =====");
-      console.log(data);
-
-      setResult(data);
-
-      localStorage.setItem(
-        "workflow_result",
-        JSON.stringify(data)
-      );
-    } catch (err: any) {
-      setError(err.message || "Workflow failed");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white text-xl">
-        🤖 AI Agent is preparing your application...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-red-500">
-        {error}
-      </div>
-    );
-  }
 
   const renderContent = () => {
     switch (active) {
@@ -101,7 +47,6 @@ export default function DashboardPage() {
           <Overview
             setActive={setActive}
             data={result}
-            onStartAI={handleStartAI}
           />
         );
     }

@@ -52,13 +52,19 @@ export async function runOrchestrator(payload: {
   profile: any;
   preferences: any;
 }) {
-  const res = await fetch(`${BASE_URL}/orchestrator/start`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
+	console.log("========== SENDING TO API ==========");
+  	console.log(payload);
+  	console.log("Resume Length:", payload.resume_text.length);	
+	
+	
+	
+	const res = await fetch(`${BASE_URL}/orchestrator/start`, {
+    		method: "POST",
+    		headers: {
+      		"Content-Type": "application/json",
+		},
+		body: JSON.stringify(payload),
+	});
 
   if (!res.ok) {
     const err = await res.json();

@@ -16,11 +16,16 @@ def rank_jobs_node(state):
     summary = profile.get("summary", "")
     skills = profile.get("skills", [])
 
-    query = f"{summary} {' '.join(skills)}"
+    query = f"""
+    Summary:
+    {summary}
 
-    # Fallback if profile is empty
-    if not query.strip():
-        query = resume_text
+    Skills:
+    {' '.join(skills)}
+    
+    Resume:
+    {resume_text}
+    """.strip()
 
     print("=" * 80)
     print("Vector Search Query:")
@@ -28,6 +33,11 @@ def rank_jobs_node(state):
     print("=" * 80)
 
     ranked = vector_search(query)
+    print("=" * 80)
+    print("Top Ranked Jobs")
+    for i, job in enumerate(ranked, start=1):
+        print(f"{i}. {job.get('title')} | {job.get('company')}")
+    print("=" * 80)
 
     return {
         **state,

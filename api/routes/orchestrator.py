@@ -2,14 +2,25 @@ from fastapi import APIRouter
 from workflows.graph import workflow
 from tools.job_search import search_jobs
 
+from agents.profile_agent import extract_profile
 router = APIRouter(prefix="/orchestrator", tags=["Orchestrator"])
 
 
 @router.post("/start")
 def start_agent(payload: dict):
+    print("=" * 80)
+    print("PAYLOAD RECEIVED")
+    print(payload.keys())
+    resume_text = payload.get("resume_text", "")
 
-    resume_text = payload.get("resume_text")
-    profile = payload.get("profile", {})
+
+    print("Resume Length:", len(resume_text))
+    print(resume_text[:300])
+    print("=" * 80)
+
+    resume_text = payload.get("resume_text", "")
+
+    profile = extract_profile(resume_text)
     preferences = payload.get("preferences", {})
 
     jobs = search_jobs(
