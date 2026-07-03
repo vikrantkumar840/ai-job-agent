@@ -7,13 +7,11 @@ from config.llm import invoke_llm
 def extract_profile(resume_text: str):
 
     prompt = f"""
-You are an AI Resume Parser.
+You are an expert Resume Parser.
 
-Extract the following information from the resume.
+Read the resume carefully.
 
 Return ONLY valid JSON.
-
-Fields:
 
 {{
 "name":"",
@@ -21,14 +19,37 @@ Fields:
 "phone":"",
 "location":"",
 "summary":"",
+"target_role":"",
 "skills":[],
 "experience":[],
 "projects":[],
 "education":[],
-"certifications":[]
+"certifications":[],
+"career_role":""
 }}
 
-Resume:
+Rules:
+
+target_role should be ONE best matching profession.
+
+Examples
+
+DevOps Engineer
+Software Engineer
+Data Analyst
+Business Analyst
+MBA Finance
+HR Executive
+Cloud Engineer
+Python Developer
+Java Developer
+AI Engineer
+QA Engineer
+Cyber Security Engineer
+Sales Executive
+Marketing Executive
+
+Resume
 
 {resume_text}
 """
@@ -45,16 +66,19 @@ Resume:
     try:
         return json.loads(text)
 
-    except Exception:
+    except:
         return {
-            "name": "",
-            "email": "",
-            "phone": "",
-            "location": "",
-            "summary": "",
-            "skills": [],
-            "experience": [],
-            "projects": [],
-            "education": [],
-            "certifications": []
-        }
+            "name":"",
+            "email":"",
+            "phone":"",
+            "location":"",
+            "summary":"",
+            "target_role":"",
+            "skills":[],
+            "experience":[],
+            "projects":[],
+            "education":[],
+            "certifications":[],
+            "career_role":""
+        
+            }

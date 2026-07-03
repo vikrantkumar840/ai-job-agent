@@ -1,37 +1,65 @@
+from urllib.parse import quote_plus
+
 from browser.playwright_client import get_browser
+
 import time
 
-def search_linkedin_jobs(query="devops engineer"):
+
+def search_linkedin_jobs(
+    role="Software Engineer",
+    location="India",
+    experience=""
+):
+
     p, browser, page = get_browser()
 
-    url = f"https://www.linkedin.com/jobs/search?keywords={query}"
+    keywords = quote_plus(role)
+
+    location = quote_plus(location)
+
+    url = (
+        "https://www.linkedin.com/jobs/search/"
+        f"?keywords={keywords}"
+        f"&location={location}"
+    )
 
     page.goto(url, timeout=60000)
-    time.sleep(5)
+
+    time.sleep(6)
 
     jobs = []
+
     cards = page.query_selector_all("div.base-card")
 
-    for card in cards[:5]:
+    for card in cards[:30]:
+
         try:
-            title_el = card.query_selector("h3")
-            company_el = card.query_selector("h4")
-            link_el = card.query_selector("a")
 
-            if not title_el or not company_el:
-                continue
+            title = card.query_selector("h3").inner_text().strip()
 
-            jobs.append({
-                "title": title_el.inner_text().strip(),
-                "company": company_el.inner_text().strip(),
-                "description": f"{title_el.inner_text()} at {company_el.inner_text()}",
-                "location": "LinkedIn",
-                "link": link_el.get_attribute("href") if link_el else ""
-            })
-        except:
-            continue
+            company = card.query_selector("h4").inner_text().strip()
+
+            location_text = card.query_selector(
+                "span.job-search-card__location"
+            ).inner_text().strip()
+
+            link = card.query_selector("a").get_attribute("href")
+
+            jobs.append(
+                {
+                    "title": title,
+                    "company": company,
+                    "location": location_text,
+                    "description": f"{title} at {company}",
+                    "link": link,
+                }
+            )
+
+        except Exception:
+            pass
 
     browser.close()
+
     p.stop()
 
     return jobs

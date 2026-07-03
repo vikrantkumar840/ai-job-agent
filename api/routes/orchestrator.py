@@ -23,11 +23,19 @@ def start_agent(payload: dict):
     profile = extract_profile(resume_text)
     preferences = payload.get("preferences", {})
 
-    jobs = search_jobs(
-        role=preferences.get("role", ""),
-        city=preferences.get("city", "")
-    )
+    role = preferences.get("department", "").strip()
 
+    if not role:
+        role = profile.get("career_role", "")
+
+    jobs = search_jobs(
+
+        role=role,
+        city=preferences.get("location", ""),
+        website=preferences.get("website", "LinkedIn"),
+        experience=preferences.get("experience", ""),
+        limit=preferences.get("jobs_count", 10),
+    )
     state = {
         "resume_text": resume_text,
         "profile": profile,

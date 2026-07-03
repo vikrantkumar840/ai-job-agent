@@ -5,57 +5,101 @@ from agents.resume_agent import generate_resume
 from agents.cover_letter_agent import generate_cover_letter
 from vector.retriever import search_jobs as vector_search
 
-# ----------------------------
-# RANK NODE
-# ----------------------------
+
+# =====================================================
+# Rank Jobs
+# =====================================================
+
 def rank_jobs_node(state):
 
     profile = state.get("profile", {})
     resume_text = state.get("resume_text", "")
+    preferences = state.get("preferences", {})
 
     summary = profile.get("summary", "")
     skills = profile.get("skills", [])
 
-    query = f"""
-    Summary:
-    {summary}
+    department = preferences.get("department", "")
+    location = preferences.get("location", "")
+    experience = preferences.get("experience", "")
+    website = preferences.get("website", "")
+    jobs_count = int(preferences.get("jobs_count", 10))
 
-    Skills:
-    {' '.join(skills)}
-    
-    Resume:
-    {resume_text}
-    """.strip()
+    query = f"""
+Department:
+{department}
+
+Preferred Location:
+{location}
+
+Experience:
+{experience}
+
+Preferred Website:
+{website}
+
+Professional Summary:
+{summary}
+
+Skills:
+{' '.join(skills)}
+
+Resume:
+{resume_text}
+""".strip()
 
     print("=" * 80)
-    print("Vector Search Query:")
+    print("VECTOR SEARCH QUERY")
     print(query)
     print("=" * 80)
 
-    ranked = vector_search(query)
+    ranked_jobs = vector_search(
+        query=query,
+        limit=jobs_count
+    )
+
     print("=" * 80)
-    print("Top Ranked Jobs")
-    for i, job in enumerate(ranked, start=1):
-        print(f"{i}. {job.get('title')} | {job.get('company')}")
+    print(f"Top {len(ranked_jobs)} Ranked Jobs")
+    print("=" * 80)
+
+    for index, job in enumerate(ranked_jobs, start=1):
+        print(
+            f"{index}. "
+            f"{job.get('title')} | "
+            f"{job.get('company')} | "
+            f"{job.get('location')}"
+        )
+
     print("=" * 80)
 
     return {
         **state,
-        "ranked_jobs": ranked,
-        "selected_jobs": ranked[:3],
+        "ranked_jobs": ranked_jobs,
+        "selected_jobs": ranked_jobs
     }
-# ----------------------------
-# RESUME NODE
-# ----------------------------
+
+
+# =====================================================
+# Resume Generator
+# =====================================================
+
 def resume_node(state):
 
     profile = state.get("profile", {})
     selected_jobs = state.get("selected_jobs", [])
 
-    if not selected_jobs:
-        return {"resume": {"error": "No ranked jobs available"}}
+    if len(selected_jobs) == 0:
+        return {
+            **state,
+            "resume": {
+                "error": "No jobs available."
+            }
+        }
 
-    resume = generate_resume(profile, selected_jobs)
+    resume = generate_resume(
+        profile,
+        selected_jobs
+    )
 
     return {
         **state,
@@ -63,29 +107,40 @@ def resume_node(state):
     }
 
 
-# ----------------------------
-# COVER LETTER NODE
-# ----------------------------
+# =====================================================
+# Cover Letter Generator
+# =====================================================
+
 def cover_node(state):
 
     profile = state.get("profile", {})
     selected_jobs = state.get("selected_jobs", [])
-    resume = state.get("resume", "")
+    resume = state.get("resume", {})
 
-    if not selected_jobs:
-        return {"cover_letter": {"error": "No ranked jobs available"}}
+    if len(selected_jobs) == 0:
+        return {
+            **state,
+            "cover_letter": {
+                "error": "No jobs available."
+            }
+        }
 
-    letter = generate_cover_letter(profile, selected_jobs, resume)
+    cover_letter = generate_cover_letter(
+        profile,
+        selected_jobs,
+        resume
+    )
 
     return {
         **state,
-        "cover_letter": letter
+        "cover_letter": cover_letter
     }
 
 
-# ----------------------------
-# BUILD GRAPH
-# ----------------------------
+# =====================================================
+# LangGraph
+# =====================================================
+
 graph = StateGraph(JobState)
 
 graph.add_node("rank_jobs", rank_jobs_node)

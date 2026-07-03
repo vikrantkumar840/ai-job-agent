@@ -1,4 +1,4 @@
-import requests
+import traceback
 
 from browser.linkedin import search_linkedin_jobs
 
@@ -6,69 +6,108 @@ from vector.indexer import index_jobs
 from vector.retriever import search_jobs as vector_search
 
 
-KEYWORDS = [
-    "devops",
-    "devops engineer",
-    "aws",
-    "terraform",
-    "docker",
-    "kubernetes",
-    "cloud",
-    "sre",
-]
+def remove_duplicates(jobs):
+
+    seen = set()
+    unique = []
+
+    for job in jobs:
+
+        key = (
+            job.get("title", "").strip().lower(),
+            job.get("company", "").strip().lower(),
+        )
+
+        if key not in seen:
+            seen.add(key)
+            unique.append(job)
+
+    return unique
 
 
-def is_relevant(job):
-    text = (
-        job.get("title", "") +
-        " " +
-        job.get("description", "")
-    ).lower()
-
-    return any(k in text for k in KEYWORDS)
-
-
-def search_jobs(role: str, city: str = ""):
+def search_jobs(
+    role: str,
+    city: str = "",
+    website: str = "LinkedIn",
+    experience: str = "",
+    limit: int = 10,
+):
 
     jobs = []
 
-    # RemoteOK
+    role = role or "Software Engineer"
+
+    print("=" * 80)
+    print("Searching Jobs")
+    print("Role      :", role)
+    print("Location  :", city)
+    print("Website   :", website)
+    print("Experience:", experience)
+    print("=" * 80)
+
     try:
 
-        response = requests.get(
-            "https://remoteok.com/api",
-            timeout=10,
+        linkedin_jobs = search_linkedin_jobs(
+            role=role,
+            location=city or "India",
+            experience=experience,
         )
 
-        data = response.json()
+        jobs.extend(linkedin_jobs)
 
-        for item in data[1:]:
+    except Exception:
 
-            job = {
-                "title": item.get("position", ""),
-                "company": item.get("company", ""),
-                "description": item.get("description", ""),
-                "location": item.get("location", "Remote"),
-            }
+        print("LinkedIn Search Failed")
+        traceback.print_exc()
 
-            if is_relevant(job):
-                jobs.append(job)
+    # Filter by location if possible
+    if city:
 
-    except Exception as e:
-        print("RemoteOK:", e)
+        filtered = []
 
-    # LinkedIn
-    try:
-        jobs.extend(search_linkedin_jobs(role or "devops"))
-    except Exception as e:
-        print("LinkedIn:", e)
+        for job in jobs:
 
-    jobs = jobs[:30]
+            job_location = job.get("location", "").lower()
 
-    # Index all jobs into Qdrant
-    index_jobs(jobs)
+            if city.lower() in job_location:
+                filtered.append(job)
 
-    # Perform semantic search
-    query = f"{role} {city}".strip()
+        # Use filtered jobs only if at least one match exists
+        if filtered:
+            jobs = filtered
 
-    return vector_search(query, limit=5)
+    jobs = remove_duplicates(jobs)
+
+    jobs = jobs[: max(limit * 3, 30)]
+
+    print("=" * 80)
+    print(f"Jobs Collected : {len(jobs)}")
+    print("=" * 80)
+
+    if jobs:
+        index_jobs(jobs)
+
+    semantic_query = f"""
+Role:
+{role}
+
+Location:
+{city}
+
+Experience:
+{experience}
+
+Website:
+{website}
+""".strip()
+
+    ranked_jobs = vector_search(
+        query=semantic_query,
+        limit=limit,
+    )
+
+    print("=" * 80)
+    print(f"Returning Top {len(ranked_jobs)} Jobs")
+    print("=" * 80)
+
+    return ranked_jobs

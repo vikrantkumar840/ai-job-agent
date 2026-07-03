@@ -14,13 +14,25 @@ export default function UploadResume() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [file, setFile] = useState<File | null>(null);
+
+  const [location, setLocation] = useState("");
+  const [department, setDepartment] = useState("");
+  const [experience, setExperience] = useState("Entry Level");
+  const [website, setWebsite] = useState("LinkedIn");
+  const [jobsCount, setJobsCount] = useState(10);
+
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
 
   async function handleUpload() {
     if (!file) {
-      setError("Please select a PDF.");
+      setError("Please upload a resume.");
+      return;
+    }
+
+    if (!location.trim()) {
+      setError("Please enter preferred location.");
       return;
     }
 
@@ -28,7 +40,7 @@ export default function UploadResume() {
       setLoading(true);
       setError("");
 
-      setStatus("Uploading resume...");
+      setStatus("Uploading Resume...");
 
       const upload = await uploadResume(file);
 
@@ -39,37 +51,23 @@ export default function UploadResume() {
 
       localStorage.removeItem("workflow_result");
 
-      setStatus("Running AI Agent...");
+      setStatus("Searching Jobs...");
 
       const workflow = await runOrchestrator({
         resume_text: upload.resume_text,
         profile: {},
-        preferences: {},
+        preferences: {
+          location,
+          department,
+          experience,
+          website,
+          jobs_count: jobsCount,
+        },
       });
+
       console.log("===== WORKFLOW RESPONSE =====");
       console.log(workflow);
-      
-      console.log("Selected Jobs:");
-      
-      console.log(workflow.selected_jobs);
 
-
-      localStorage.setItem(
-  
-	      "workflow_result",
-  
-	      JSON.stringify(workflow)
-
-      );
-
-
-      console.log("Saved to localStorage:");
-
-      console.log(
-  
-	      JSON.parse(localStorage.getItem("workflow_result")!)
-
-      );
       localStorage.setItem(
         "workflow_result",
         JSON.stringify(workflow)
@@ -97,44 +95,134 @@ export default function UploadResume() {
   }
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0b10] p-8">
+    <div className="w-full max-w-3xl rounded-3xl border border-white/10 bg-[#0b0d12] p-10">
 
-      <h2 className="text-2xl font-semibold mb-2">
-        Upload Resume
-      </h2>
+      <h1 className="text-3xl font-bold">
+        Upload Resume & Configure Search
+      </h1>
 
-      <p className="text-white/60 mb-6">
-        Upload your latest resume.
+      <p className="mt-2 text-white/60">
+        Upload your resume and tell the AI exactly what jobs you want.
       </p>
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="application/pdf"
-        onChange={(e) => {
-          setFile(e.target.files?.[0] || null);
-          setError("");
-        }}
-      />
+      <div className="mt-8 space-y-6">
+
+        <div>
+          <label className="text-sm text-white/70">
+            Resume (PDF)
+          </label>
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="application/pdf"
+            onChange={(e) =>
+              setFile(e.target.files?.[0] || null)
+            }
+            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm text-white/70">
+            Preferred Location
+          </label>
+
+          <input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Bangalore"
+            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm text-white/70">
+            Department / Role
+          </label>
+
+          <input
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+	    placeholder="Leave blank to auto detect from resume"            
+	    className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          />
+        </div>
+
+        <div>
+          <label className="text-sm text-white/70">
+            Experience
+          </label>
+
+          <select
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          >
+            <option>Internship</option>
+            <option>Entry Level</option>
+            <option>Associate</option>
+            <option>Mid Level</option>
+            <option>Senior</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-sm text-white/70">
+            Preferred Website
+          </label>
+
+          <select
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          >
+            <option>LinkedIn</option>
+            <option>Naukri</option>
+            <option>Indeed</option>
+            <option>Foundit</option>
+            <option>Glassdoor</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="text-sm text-white/70">
+            Number of Jobs
+          </label>
+
+          <select
+            value={jobsCount}
+            onChange={(e) =>
+              setJobsCount(Number(e.target.value))
+            }
+            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 p-3"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+          </select>
+        </div>
+
+      </div>
 
       {status && (
-        <p className="mt-4 text-cyan-400">
+        <p className="mt-6 text-cyan-400">
           {status}
         </p>
       )}
 
       {error && (
-        <p className="mt-4 text-red-400">
+        <p className="mt-6 text-red-400">
           {error}
         </p>
       )}
 
       <button
         onClick={handleUpload}
-        disabled={loading || !file}
-        className="mt-6 w-full rounded-xl bg-cyan-500 py-3 text-black font-semibold"
+        disabled={loading}
+        className="mt-8 w-full rounded-xl bg-cyan-500 py-4 text-lg font-semibold text-black hover:bg-cyan-400 transition"
       >
-        {loading ? "AI is Working..." : "Upload & Start AI"}
+        {loading ? "AI Agent Running..." : "🚀 Start AI Agent"}
       </button>
 
     </div>
