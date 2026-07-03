@@ -19,3 +19,5 @@ class JobState(TypedDict):
     resume: str
 
     cover_letter: str
+    
+    session_id: str

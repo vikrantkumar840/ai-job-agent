@@ -22,28 +22,30 @@ def start_agent(payload: dict):
 
     profile = extract_profile(resume_text)
     preferences = payload.get("preferences", {})
-
     role = preferences.get("department", "").strip()
 
     if not role:
-        role = profile.get("career_role", "")
-
-    jobs = search_jobs(
-
+        role = profile.get("career_role", "").strip()
+    job_result = search_jobs(
         role=role,
         city=preferences.get("location", ""),
         website=preferences.get("website", "LinkedIn"),
         experience=preferences.get("experience", ""),
         limit=preferences.get("jobs_count", 10),
     )
+
+
+    jobs = job_result["jobs"]
+    session_id = job_result["session_id"]   
     state = {
         "resume_text": resume_text,
         "profile": profile,
         "preferences": preferences,
         "jobs": jobs,
         "selected_jobs": [],
-        "chat_history": []
-    }
+        "chat_history": [],
+        "session_id": session_id,    
+        }
 
     result = workflow.invoke(state)
 

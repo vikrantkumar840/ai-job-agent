@@ -53,11 +53,13 @@ Resume:
     print(query)
     print("=" * 80)
 
+    session_id = state["session_id"]
+
     ranked_jobs = vector_search(
         query=query,
-        limit=jobs_count
+        session_id=session_id,
+        limit=jobs_count,
     )
-
     print("=" * 80)
     print(f"Top {len(ranked_jobs)} Ranked Jobs")
     print("=" * 80)

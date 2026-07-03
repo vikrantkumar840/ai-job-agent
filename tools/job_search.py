@@ -1,5 +1,5 @@
 import traceback
-
+import uuid
 from browser.linkedin import search_linkedin_jobs
 
 from vector.indexer import index_jobs
@@ -85,7 +85,11 @@ def search_jobs(
     print("=" * 80)
 
     if jobs:
-        index_jobs(jobs)
+        session_id = str(uuid.uuid4())        
+        index_jobs(
+                jobs,
+                session_id,
+                )
 
     semantic_query = f"""
 Role:
@@ -103,6 +107,7 @@ Website:
 
     ranked_jobs = vector_search(
         query=semantic_query,
+        session_id=session_id,        
         limit=limit,
     )
 
@@ -110,4 +115,7 @@ Website:
     print(f"Returning Top {len(ranked_jobs)} Jobs")
     print("=" * 80)
 
-    return ranked_jobs
+    return {
+            "jobs": ranked_jobs,
+            "session_id": session_id,
+            }

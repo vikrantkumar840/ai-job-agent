@@ -1,3 +1,6 @@
+import uuid
+from qdrant_client.models import Filter, FieldCondition, MatchValue
+
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
     Distance,
@@ -40,31 +43,44 @@ class QdrantStore:
     # ----------------------------
     # INSERT
     # ----------------------------
-    def insert(self, job_id, vector, payload):
 
+    def insert(self, vector, payload):
         self.client.upsert(
-            collection_name=self.COLLECTION_NAME,
-            points=[
-                PointStruct(
-                    id=job_id,
-                    vector=vector,
-                    payload=payload,
+                collection_name=self.COLLECTION_NAME,
+                points=[
+                    PointStruct(
+                        id=str(uuid.uuid4()),
+                        vector=vector,
+                        payload=payload,
+                        )
+                    ],
                 )
-            ],
-        )
-
     # ----------------------------
     # SEARCH
     # ----------------------------
-    def search(self, vector, limit=5):
+    def search(
+        self,
+        vector,
+        session_id: str,
+        limit=5,
+    ):
 
         response = self.client.query_points(
             collection_name=self.COLLECTION_NAME,
             query=vector,
             limit=limit,
+            query_filter=Filter(
+                must=[
+                    FieldCondition(
+                        key="session_id",
+                        match=MatchValue(
+                            value=session_id,
+                        ),
+                    )
+                ]
+            ),
         )
 
         return response.points
-
 
 qdrant_store = QdrantStore()
