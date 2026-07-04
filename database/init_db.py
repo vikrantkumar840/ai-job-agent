@@ -1,29 +1,15 @@
-import sqlite3
-import os
+from database.postgres import engine
+from database.models import Base
 
-DB_PATH = "database/app.db"
 
-def init_db():
-    os.makedirs("database", exist_ok=True)
+def init_database():
 
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+    Base.metadata.create_all(bind=engine)
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS applications (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        job_title TEXT,
-        company TEXT,
-        score INTEGER,
-        resume_path TEXT,
-        cover_letter_path TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-    """)
+    print("=" * 80)
+    print("PostgreSQL Ready")
+    print("=" * 80)
 
-    conn.commit()
-    conn.close()
 
 if __name__ == "__main__":
-    init_db()
-    print("DB initialized successfully")
+    init_database()
