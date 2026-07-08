@@ -5,19 +5,23 @@ from database.config import settings
 
 client = MongoClient(settings.MONGODB_URI)
 
-mongodb = client[settings.MONGODB_DATABASE]
+db = client[settings.MONGODB_DATABASE]
 
 
-profiles = mongodb["profiles"]
+profiles = db["user_profiles"]
 
-resumes = mongodb["resumes"]
+resume_history = db["resume_history"]
 
-generated_resumes = mongodb["generated_resumes"]
+job_sessions = db["job_sessions"]
 
-cover_letters = mongodb["cover_letters"]
+cover_letters = db["cover_letters"]
 
-chat_history = mongodb["chat_history"]
+chat_history = db["chat_history"]
 
-search_history = mongodb["search_history"]
+ai_outputs = db["ai_outputs"]
 
-workflow_runs = mongodb["workflow_runs"]
+chat_history = db.chat_history
+
+interview_sessions = db["interview_sessions"]
+
+resume_versions = db["resume_versions"]

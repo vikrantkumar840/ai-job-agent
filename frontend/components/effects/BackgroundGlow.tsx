@@ -3,55 +3,69 @@
 import { motion } from "framer-motion";
 
 export default function BackgroundGlow() {
-  return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
 
-      {/* Left Glow */}
+  return (
+
+    <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+
       <motion.div
+
         animate={{
-          opacity: [0.25, 0.55, 0.25],
-          scale: [1, 1.15, 1],
+          x: [-120, 100, -120],
+          y: [-80, 70, -80],
         }}
+
         transition={{
-          duration: 5,
+          duration: 30,
           repeat: Infinity,
-          ease: "easeInOut",
+          repeatType: "mirror",
+          ease: "linear",
         }}
+
         className="
-          absolute
-          -top-48
-          -left-48
-          w-[700px]
-          h-[700px]
-          rounded-full
-          bg-cyan-500/30
-          blur-[180px]
+        absolute
+        left-[-250px]
+        top-[-250px]
+        h-[900px]
+        w-[900px]
+        rounded-full
+        bg-cyan-500/25
+        blur-[180px]
+        will-change-transform
         "
+
       />
 
-      {/* Right Glow */}
       <motion.div
+
         animate={{
-          opacity: [0.20, 0.45, 0.20],
-          scale: [1.1, 0.95, 1.1],
+          x: [120, -80, 120],
+          y: [60, -100, 60],
         }}
+
         transition={{
-          duration: 6,
+          duration: 34,
           repeat: Infinity,
-          ease: "easeInOut",
+          repeatType: "mirror",
+          ease: "linear",
         }}
+
         className="
-          absolute
-          -bottom-48
-          -right-48
-          w-[650px]
-          h-[650px]
-          rounded-full
-          bg-emerald-500/25
-          blur-[180px]
+        absolute
+        right-[-250px]
+        bottom-[-250px]
+        h-[850px]
+        w-[850px]
+        rounded-full
+        bg-emerald-500/20
+        blur-[180px]
+        will-change-transform
         "
+
       />
 
     </div>
+
   );
+
 }

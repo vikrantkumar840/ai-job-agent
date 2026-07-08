@@ -16,20 +16,23 @@ export default function WorkspaceLayout({
   setActive,
 }: WorkspaceLayoutProps) {
   return (
-    <div className="h-screen w-full flex bg-[#05060a] text-white overflow-hidden">
-      {/* Sidebar */}
-      <Sidebar active={active} setActive={setActive} />
+    <div className="flex min-h-screen bg-gradient-to-br from-[#05060a] via-[#0a0d14] to-[#05060a] text-white">
 
-      {/* Main Area */}
-      <div className="flex flex-col flex-1">
-        {/* Topbar */}
+      <Sidebar
+        active={active}
+        setActive={setActive}
+      />
+
+      <div className="flex flex-1 flex-col">
+
         <Topbar active={active} />
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 p-8">
           {children}
         </main>
+
       </div>
+
     </div>
   );
 }

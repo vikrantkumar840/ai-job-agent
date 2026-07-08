@@ -54,7 +54,8 @@ export default function UploadResume() {
       setStatus("Searching Jobs...");
 
       const workflow = await runOrchestrator({
-        resume_text: upload.resume_text,
+	user_id: 2,        
+	resume_text: upload.resume_text,
         profile: {},
         preferences: {
           location,
