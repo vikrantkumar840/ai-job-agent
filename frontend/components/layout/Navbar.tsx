@@ -1,34 +1,97 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <motion.nav
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className="fixed top-0 w-full z-50"
+    <header
+      className={`fixed left-1/2 top-5 z-50
+      -translate-x-1/2
+      transition-all duration-500
+      ${
+        scrolled
+          ? "w-[92%] max-w-7xl"
+          : "w-[96%] max-w-[1500px]"
+      }`}
     >
-      <div className="mx-auto max-w-7xl px-10 py-5">
-        
-        <div className="flex justify-between items-center 
-          rounded-2xl border border-white/10 
-          bg-white/5 backdrop-blur-xl px-6 py-4">
+      <div
+        className="
+        flex
+        h-16
+        items-center
+        justify-between
+        rounded-full
+        border
+        border-white/10
+        bg-black/35
+        px-8
+        backdrop-blur-2xl
+        shadow-[0_0_40px_rgba(0,0,0,.35)]
+        "
+      >
+        <Link
+          href="/"
+          className="text-2xl font-bold tracking-tight"
+        >
+          Resu
+          <span className="text-cyan-400">
+            Apply
+          </span>
+        </Link>
 
-          <h1 className="text-xl font-bold tracking-wide">
-            Resu<span className="text-cyan-400">Apply</span>
-          </h1>
+        <nav className="hidden gap-8 text-white/70 md:flex">
 
-          <div className="flex gap-10 text-sm text-white/70">
-            <Link href="/">Home</Link>
-            <Link href="/dashboard">Dashboard</Link>
-	    <Link href="/workspace">Workspace</Link>
-          </div>
+          <a href="#workflow" className="hover:text-white transition">
+            Workflow
+          </a>
 
-        </div>
+          <a href="#features" className="hover:text-white transition">
+            Features
+          </a>
+
+          <a href="#technology" className="hover:text-white transition">
+            Technology
+          </a>
+
+          <a href="#contact" className="hover:text-white transition">
+            Contact
+          </a>
+
+        </nav>
+
+        <button
+          onClick={() => router.push("/workflow")}
+          className="
+          rounded-full
+          bg-cyan-400
+          px-6
+          py-3
+          font-semibold
+          text-black
+          transition
+          hover:scale-105
+          "
+        >
+          Get Started
+        </button>
 
       </div>
-    </motion.nav>
+    </header>
   );
 }

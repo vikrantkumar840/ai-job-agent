@@ -26,28 +26,25 @@ export default function AppShell() {
       <Navbar />
 
       {/* Content */}
-      <div className="relative z-10">
-
-        <Hero />
-
+      <div className="mx-auto max-w-7xl px-8">
+	<Hero />
         <div className="py-15">
-          <ScrollScene />
+        <ScrollScene />
         </div>
 
         <div className="py-15">
-          <Bento />
+        <Bento />                  
         </div>
 
         <div className="py-15">
-          <Dashboard />
+        <Dashboard />
+        </div>
+        <div className="py-15">
+        <Tech />
         </div>
 
         <div className="py-15">
-          <Tech />
-        </div>
-
-        <div className="py-15">
-          <CTA />
+        <CTA />
         </div>
 
         <Footer />
