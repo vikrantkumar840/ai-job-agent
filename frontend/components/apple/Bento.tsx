@@ -47,7 +47,7 @@ const cards = [
 
 export default function Bento() {
     return (
-        <section className="relative py-36">
+        <section className="relative py-15">
 
             <div className="max-w-7xl mx-auto px-10">
 

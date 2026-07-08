@@ -69,7 +69,7 @@ export default function ScrollScene() {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#05060a] py-32"    
+      className="relative bg-[#05060a] py-25"    
       >
       <div className="h-screen">
         <div className="max-w-7xl mx-auto h-full px-10 grid lg:grid-cols-2 gap-32 items-center">

@@ -30,23 +30,23 @@ export default function AppShell() {
 
         <Hero />
 
-        <div className="py-32">
+        <div className="py-15">
           <ScrollScene />
         </div>
 
-        <div className="py-32">
+        <div className="py-15">
           <Bento />
         </div>
 
-        <div className="py-32">
+        <div className="py-15">
           <Dashboard />
         </div>
 
-        <div className="py-32">
+        <div className="py-15">
           <Tech />
         </div>
 
-        <div className="py-32">
+        <div className="py-15">
           <CTA />
         </div>
 
