@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+
 import WorkspaceLayout from "@/components/layout/WorkspaceLayout";
 
 import Overview from "@/components/workspace/Overview";
@@ -14,6 +17,21 @@ import Results from "@/components/workspace/Results";
 export default function DashboardPage() {
   const [active, setActive] = useState("Overview");
   const [result, setResult] = useState<any>(null);
+  const router = useRouter();
+  const {
+	  user,
+	  loading,
+  } = useAuth();
+  
+  useEffect(() => {
+	  if (!loading && !user) {
+		  router.replace("/login");
+	  }
+  }, [loading, user, router]);
+
+
+
+
 
   useEffect(() => {
 	  const saved = localStorage.getItem("workflow_result");
@@ -51,6 +69,17 @@ export default function DashboardPage() {
         );
     }
   };
+  if (loading) {
+	  return (
+		  <div className="flex min-h-screen items-center justify-center">
+		  Loading...
+		  </div>
+	  );
+  }
+
+if (!user) {
+  return null;
+}
 
   return (
     <WorkspaceLayout

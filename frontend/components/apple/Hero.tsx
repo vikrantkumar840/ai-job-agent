@@ -8,7 +8,10 @@ export default function Hero() {
   const router = useRouter();
 
   return (
-    <section className="relative min-h-screen flex items-center">
+    <section 
+    	id="hero"    	
+	className="relative min-h-screen flex items-center"
+    >
     
       <div className="max-w-7xl mx-auto w-full px-8 lg:px-12">
 

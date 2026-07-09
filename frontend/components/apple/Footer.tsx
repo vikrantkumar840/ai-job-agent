@@ -25,7 +25,11 @@ const resources = [
 
 export default function Footer() {
   return (
-    <footer className="mt-10 border-t border-white/10 bg-black/20">
+    <footer 
+    	id="contact"    	
+    	className="mt-10 border-t border-white/10 bg-black/20"
+    
+    >
 
       <div className="mx-auto max-w-7xl px-8 py-10">
 

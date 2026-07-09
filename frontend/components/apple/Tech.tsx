@@ -57,7 +57,10 @@ const technologies = [
 
 export default function Tech() {
   return (
-    <section className="max-w-7xl mx-auto px-8">
+    <section   
+    	id="technology"
+	className="max-w-7xl mx-auto px-8"
+    >
 
       <div className="text-center mb-20">
 

@@ -10,7 +10,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > 120);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -21,14 +21,17 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed left-1/2 top-5 z-50
+      className={`fixed left-1/2 top-1 z-50
       -translate-x-1/2
       transition-all duration-500
       ${
         scrolled
-          ? "w-[92%] max-w-7xl"
-          : "w-[96%] max-w-[1500px]"
-      }`}
+          ? "translate-y-0 opacity-100 scale-100"          
+	  : "-translate-y-16 opacity-0 scale-95 pointer-events-none"      
+      }
+      w-[92%]
+      max-w-7x1
+      `}
     >
       <div
         className="
@@ -49,9 +52,9 @@ export default function Navbar() {
           href="/"
           className="text-2xl font-bold tracking-tight"
         >
-          Resu
+          Resume
           <span className="text-cyan-400">
-            Apply
+            Apply World
           </span>
         </Link>
 
