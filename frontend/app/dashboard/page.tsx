@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
+
 import { useAuth } from "@/hooks/useAuth";
 
 import WorkspaceLayout from "@/components/layout/WorkspaceLayout";
+
+import UploadResume from "@/components/dashboard/UploadResume";
 
 import Overview from "@/components/workspace/Overview";
 import Search from "@/components/workspace/Search";
@@ -15,35 +17,59 @@ import Interview from "@/components/workspace/Interview";
 import Results from "@/components/workspace/Results";
 
 export default function DashboardPage() {
-  const [active, setActive] = useState("Overview");
-  const [result, setResult] = useState<any>(null);
   const router = useRouter();
-  const {
-	  user,
-	  loading,
-  } = useAuth();
-  
+
+  const { user, loading } = useAuth();
+
+  const [active, setActive] = useState("Overview");
+
+  const [result, setResult] = useState<any>(null);
+
+  const [resumeUploaded, setResumeUploaded] =
+    useState(false);
+
   useEffect(() => {
-	  if (!loading && !user) {
-		  router.replace("/login");
-	  }
+    if (!loading && !user) {
+      router.replace("/login");
+    }
   }, [loading, user, router]);
 
-
-
-
-
   useEffect(() => {
-	  const saved = localStorage.getItem("workflow_result");
-	  console.log("===== DASHBOARD LOADED =====");
-	  if (saved) {
-		  const parsed = JSON.parse(saved);
-		  console.log(parsed);
-		  setResult(parsed);
-	  }
+    const uploaded =
+      localStorage.getItem("resume_uploaded");
+
+    setResumeUploaded(uploaded === "true");
+
+    const saved =
+      localStorage.getItem("workflow_result");
+
+    if (saved) {
+      setResult(JSON.parse(saved));
+    }
   }, []);
 
-  const renderContent = () => {
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#05060a] text-white">
+        Loading...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  // New user
+  if (!resumeUploaded) {
+    return (
+      <div className="min-h-screen bg-[#05060a] flex items-center justify-center px-6">
+        <UploadResume />
+      </div>
+    );
+  }
+
+  function renderContent() {
     switch (active) {
       case "Search Jobs":
         return <Search />;
@@ -68,18 +94,7 @@ export default function DashboardPage() {
           />
         );
     }
-  };
-  if (loading) {
-	  return (
-		  <div className="flex min-h-screen items-center justify-center">
-		  Loading...
-		  </div>
-	  );
   }
-
-if (!user) {
-  return null;
-}
 
   return (
     <WorkspaceLayout

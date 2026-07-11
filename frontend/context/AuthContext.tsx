@@ -62,7 +62,9 @@ export function AuthProvider({
 
   async function refreshUser() {
     try {
-      if (!getAccessToken()) {
+      const token = getAccessToken();
+
+      if (!token) {
         setUser(null);
         return;
       }
@@ -70,19 +72,19 @@ export function AuthProvider({
       const currentUser = await getCurrentUser();
 
       setUser(currentUser);
-    } catch (err) {
+    } catch (error) {
       clearTokens();
       setUser(null);
     }
   }
 
   useEffect(() => {
-    async function initialize() {
+    async function init() {
       await refreshUser();
       setLoading(false);
     }
 
-    initialize();
+    init();
   }, []);
 
   async function login(data: LoginData) {
@@ -93,7 +95,7 @@ export function AuthProvider({
       response.refresh_token
     );
 
-    await refreshUser();
+    setUser(response.user);
   }
 
   async function register(data: RegisterData) {
@@ -104,11 +106,16 @@ export function AuthProvider({
       response.refresh_token
     );
 
-    await refreshUser();
+    setUser(response.user);
   }
 
   function logout() {
     clearTokens();
+
+    localStorage.removeItem("workflow_result");
+    localStorage.removeItem("resume_uploaded");
+    localStorage.removeItem("resume_text");
+
     setUser(null);
   }
 
@@ -128,6 +135,6 @@ export function AuthProvider({
   );
 }
 
-export function useAuth() {
+export function useAuthContext() {
   return useContext(AuthContext);
 }

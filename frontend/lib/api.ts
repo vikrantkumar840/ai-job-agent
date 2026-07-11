@@ -117,10 +117,13 @@ export async function searchJobs(
 // =====================================
 
 export async function runOrchestrator(payload: {
+	
+  user_id: number; 
   resume_text: string;
   profile: any;
   preferences: any;
-}) {
+}) 
+{
   console.log("========== SENDING TO API ==========");
   console.log(payload);
 
