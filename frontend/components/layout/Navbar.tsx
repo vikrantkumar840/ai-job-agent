@@ -27,7 +27,7 @@ export default function Navbar() {
 
   function handleStart() {
     if (user) {
-      router.push("/dashboard");
+      router.push("/workflow");
     } else {
       router.push("/login");
     }

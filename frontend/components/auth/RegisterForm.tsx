@@ -32,7 +32,7 @@ export default function RegisterForm() {
         password,
       });
 
-      router.replace("/dashboard");
+      router.replace("/workflow");
     } catch (err: any) {
       setError(
         err?.message || "Registration failed."

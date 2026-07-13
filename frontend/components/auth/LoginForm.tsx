@@ -33,7 +33,7 @@ export default function LoginForm() {
         password,
       });
 
-      router.replace("/dashboard");
+      router.replace("/workflow");
     } catch (err: any) {
       setError(
         err.message || "Login failed."
