@@ -1,68 +1,90 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { searchJobs } from "@/lib/api";
+
+import {
+  searchJobs,
+  regenerateJobs,
+} from "@/lib/api";
+
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Search() {
+  const { user } = useAuth();
+
   const [jobs, setJobs] = useState<any[]>([]);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
+  const [error, setError] = useState("");
 
-  useEffect(() => {
-    const run = async () => {
-      try {
-        setLoading(true);
+  const [jobsCount, setJobsCount] = useState(25);
 
-        const workflowRaw = localStorage.getItem("workflow_result");
+  async function loadJobs() {
+    try {
+      setLoading(true);
+      setError("");
 
-        if (!workflowRaw) {
-          throw new Error(
-            "No workflow found. Please upload your resume first."
-          );
-        }
+      const workflowRaw = localStorage.getItem("workflow_result");
 
-        const workflow = JSON.parse(workflowRaw);
-
-        if (!workflow.session_id) {
-          throw new Error("Missing session_id in workflow.");
-        }
-
-        const resumeText = localStorage.getItem("resume_text");
-
-        if (!resumeText) {
-          throw new Error("No resume text found.");
-        }
-
-        const data = await searchJobs(
-          resumeText,
-          workflow.session_id
+      if (!workflowRaw) {
+        throw new Error(
+          "Workflow not found. Please upload your resume."
         );
-
-        setJobs(data || []);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
       }
-    };
 
-    run();
-  }, []);
+      const workflow = JSON.parse(workflowRaw);
 
-  if (loading) {
-    return (
-      <div className="text-white/60">
-        Searching jobs...
-      </div>
-    );
+      const resumeText = localStorage.getItem("resume_text");
+
+      if (!resumeText) {
+        throw new Error("Resume not found.");
+      }
+
+      const response = await searchJobs(
+        resumeText,
+        workflow.session_id
+      );
+
+      setJobs(response || []);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  if (error) {
-    return (
-      <div className="text-red-400">
-        {error}
-      </div>
-    );
+  useEffect(() => {
+    loadJobs();
+  }, []);
+
+  async function handleMoreJobs() {
+    try {
+      if (!user) return;
+
+      setRegenerating(true);
+      setError("");
+
+      const workflowRaw =
+        localStorage.getItem("workflow_result");
+
+      if (!workflowRaw) {
+        throw new Error("Workflow not found.");
+      }
+
+      const workflow = JSON.parse(workflowRaw);
+
+      const response = await regenerateJobs({
+        user_id: user.id,
+        session_id: workflow.session_id,
+        jobs_count: jobsCount,
+      });
+
+      setJobs(response.jobs || response);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setRegenerating(false);
+    }
   }
 
   return (
@@ -73,70 +95,120 @@ export default function Search() {
           Job Search Results
         </h1>
 
-        <p className="text-white/60 mt-2">
-          Jobs discovered by the AI during workflow execution.
+        <p className="mt-2 text-white/60">
+          AI matched these jobs using your resume.
         </p>
       </div>
 
-      {jobs.length === 0 ? (
+      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+
+        <h2 className="mb-4 text-xl font-semibold">
+          Need More Jobs?
+        </h2>
+
+        <p className="mb-4 text-white/60">
+          Ask the AI Agent to search for more matching jobs.
+        </p>
+
+        <div className="flex items-center gap-4">
+
+          <input
+            type="number"
+            min={5}
+            max={100}
+            value={jobsCount}
+            onChange={(e) =>
+              setJobsCount(Number(e.target.value))
+            }
+            className="w-40 rounded-xl bg-black/30 p-3"
+          />
+
+          <button
+            onClick={handleMoreJobs}
+            disabled={regenerating}
+            className="rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-black hover:bg-cyan-400"
+          >
+            {regenerating
+              ? "Searching..."
+              : "Find More Jobs"}
+          </button>
+
+        </div>
+
+      </div>
+
+      {loading && (
+        <p className="text-white/60">
+          Searching jobs...
+        </p>
+      )}
+
+      {error && (
+        <p className="text-red-400">
+          {error}
+        </p>
+      )}
+
+      {!loading && jobs.length === 0 && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-8">
           <p className="text-white/60">
             No jobs found.
           </p>
         </div>
-      ) : (
-        <div className="space-y-5">
-          {jobs.map((job: any, index: number) => (
-            <div
-              key={index}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6"
-            >
-              <h2 className="text-xl font-semibold">
-                {job.title || "Untitled Role"}
-              </h2>
-
-              <p className="mt-2 text-cyan-400">
-                {job.company || "Unknown Company"}
-              </p>
-
-              {job.location && (
-                <p className="mt-1 text-white/60">
-                  📍 {job.location}
-                </p>
-              )}
-
-              {job.experience && (
-                <p className="mt-1 text-white/60">
-                  💼 {job.experience}
-                </p>
-              )}
-
-              {job.salary && (
-                <p className="mt-1 text-green-400">
-                  💰 {job.salary}
-                </p>
-              )}
-
-              {job.description && (
-                <p className="mt-4 text-white/70 line-clamp-4">
-                  {job.description}
-                </p>
-              )}
-
-              {job.url && (
-                <a
-                  href={job.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-5 rounded-lg bg-cyan-500 px-4 py-2 text-black font-semibold hover:bg-cyan-400 transition"
-                >
-                  View Job →
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
       )}
+
+      <div className="space-y-5">
+
+        {jobs.map((job: any, index: number) => (
+
+          <div
+            key={index}
+            className="rounded-2xl border border-white/10 bg-white/5 p-6"
+          >
+
+            <h2 className="text-xl font-semibold">
+              {job.title || "Untitled Role"}
+            </h2>
+
+            <p className="mt-2 text-cyan-400">
+              {job.company || "Unknown Company"}
+            </p>
+
+            {job.location && (
+              <p className="mt-2 text-white/60">
+                📍 {job.location}
+              </p>
+            )}
+
+            {job.salary && (
+              <p className="mt-2 text-green-400">
+                💰 {job.salary}
+              </p>
+            )}
+
+            {job.description && (
+              <p className="mt-4 line-clamp-4 text-white/70">
+                {job.description}
+              </p>
+            )}
+
+            {job.url && (
+              <a
+                href={job.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-block rounded-xl bg-cyan-500 px-5 py-3 font-semibold text-black hover:bg-cyan-400"
+              >
+                View Job →
+              </a>
+            )}
+
+          </div>
+
+        ))}
+
+      </div>
+
     </div>
   );
 }

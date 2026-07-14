@@ -1,6 +1,24 @@
-from typing import TypedDict, List
+from typing import TypedDict, List, Dict, Any
+
 
 class AgentState(TypedDict):
-    query: str
-    jobs: List[dict]
-    scored_jobs: List[dict]
+
+    user_id: int
+
+    resume_text: str
+
+    profile: Dict[str, Any]
+
+    preferences: Dict[str, Any]
+
+    jobs: List[Dict]
+
+    ranked_jobs: List[Dict]
+
+    selected_jobs: List[Dict]
+
+    resume: str
+
+    cover_letter: str
+
+    session_id: str

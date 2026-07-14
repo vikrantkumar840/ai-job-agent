@@ -73,12 +73,14 @@ Resume
             "phone":"",
             "location":"",
             "summary":"",
+            "career_role":"",
             "target_role":"",
             "skills":[],
             "experience":[],
             "projects":[],
             "education":[],
             "certifications":[],
-            "career_role":""
-        
+            "years_of_experience":"",
+            "primary_domain":"",
+            "keywords":[]
             }

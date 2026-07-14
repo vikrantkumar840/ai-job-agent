@@ -22,13 +22,14 @@ async function apiRequest(
     headers,
   });
 
-  const data = await res.json();
+  const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
     throw new Error(
-      data.detail || "Something went wrong"
-    );
-  }
+	data?.detail ||
+	data?.message ||
+	"Something Went Wrong"
+    );  }
 
   return data;
 }
@@ -82,7 +83,7 @@ export async function uploadResume(file: File) {
     body: formData,
   });
 
-  const data = await res.json();
+  const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
     throw new Error(data.detail || "Upload failed");
@@ -115,13 +116,25 @@ export async function searchJobs(
 // =====================================
 // AI Orchestrator
 // =====================================
+interface UserProfile {
+  skills?: string[];
+  education?: string;
+  experience?: string;
+}
+
+interface UserPreferences {
+  location: string;
+  department: string;
+  experience: string;
+  website: string;
+  jobs_count: number;
+}
 
 export async function runOrchestrator(payload: {
-	
-  user_id: number; 
+  user_id: number;
   resume_text: string;
-  profile: any;
-  preferences: any;
+  profile: UserProfile;
+  preferences: UserPreferences;
 }) 
 {
   console.log("========== SENDING TO API ==========");
@@ -179,4 +192,30 @@ export async function regenerateCoverLetter(
       session_id: sessionId,
     }),
   });
+}
+
+// =====================================
+// Ask AI for More Jobs
+// =====================================
+
+export async function regenerateJobs(payload: {
+  user_id: number;
+  session_id: string;
+  jobs_count: number;
+}) {
+  return apiRequest("/jobs/regenerate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+}
+
+// =====================================
+// Resume Parsing
+// =====================================
+
+export async function parseResume(file: File) {
+  return uploadResume(file);
 }
