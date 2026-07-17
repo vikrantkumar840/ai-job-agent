@@ -6,22 +6,18 @@ interface Props {
 
 export default function DashboardHero({ user }: Props) {
   return (
-    <div className="rounded-3xl border border-cyan-500/20 bg-gradient-to-r from-cyan-500/10 via-slate-900 to-emerald-500/10 p-8">
-
-      <p className="text-cyan-400 text-sm uppercase tracking-widest">
-        AI Career Workspace
+    <div className="glass-surface glow-signal rounded-3xl p-8">
+      <p className="font-mono text-xs uppercase tracking-[0.3em] text-signal">
+        AI career workspace
       </p>
-
-      <h1 className="mt-3 text-4xl font-bold">
+      <h1 className="mt-3 font-display text-4xl font-bold">
         Welcome{user ? `, ${user}` : ""}
       </h1>
-
-      <p className="mt-3 max-w-2xl text-white/60 leading-7">
-        Your resume has been analyzed successfully. AI has searched,
-        ranked and optimized your job applications. Everything is ready
-        for review.
+      <p className="mt-3 max-w-2xl leading-7 text-paper-dim">
+        Your resume has been analyzed, matched against real roles, and
+        tailored automatically. ATS scoring, interview prep and applying are
+        one click away below.
       </p>
-
     </div>
   );
 }

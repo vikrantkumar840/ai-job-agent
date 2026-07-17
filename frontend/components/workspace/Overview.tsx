@@ -1,103 +1,88 @@
 "use client";
 
+import { motion } from "framer-motion";
+import StatCard from "@/components/dashboard/StatCard";
+import TiltCard from "@/components/landing/TiltCard";
+
 interface OverviewProps {
   setActive: (tab: string) => void;
   data?: any;
 }
 
-export default function Overview({
-  setActive,
-  data,
-}: OverviewProps) {
+export default function Overview({ setActive, data }: OverviewProps) {
   const rankedJobs = data?.ranked_jobs ?? [];
   const selectedJobs = data?.selected_jobs ?? [];
-  console.log("===== OVERVIEW DATA =====");
-  console.log(data);
-  console.log(selectedJobs);
 
   return (
     <div className="space-y-8">
-
       <div>
-        <h1 className="text-3xl font-bold text-white">
-          AI Application Summary
+        <h1 className="font-display text-3xl font-bold">
+          AI application summary
         </h1>
-
-        <p className="text-white/60 mt-2">
-          Your resume has been analyzed and the AI workflow has completed.
+        <p className="mt-2 text-paper-dim">
+          Your resume has been analyzed and the automatic pipeline has
+          completed.
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
-
-        <div className="rounded-2xl bg-white/5 border border-white/10 p-6">
-          <p className="text-white/60 text-sm">Ranked Jobs</p>
-
-          <h2 className="text-4xl font-bold mt-3">
-            {rankedJobs.length}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl bg-white/5 border border-white/10 p-6">
-          <p className="text-white/60 text-sm">Selected Jobs</p>
-
-          <h2 className="text-4xl font-bold mt-3">
-            {selectedJobs.length}
-          </h2>
-        </div>
-
-        <div className="rounded-2xl bg-white/5 border border-white/10 p-6">
-          <p className="text-white/60 text-sm">Status</p>
-
-          <h2 className="text-green-400 text-xl mt-3">
-            Completed
-          </h2>
-        </div>
-
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <StatCard title="Ranked Jobs" value={rankedJobs.length} />
+        <StatCard title="Selected Jobs" value={selectedJobs.length} />
+        <StatCard title="Status" value="Completed" color="text-ok" />
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-
-        <h2 className="text-xl font-semibold mb-4">
-          Top Matching Jobs
+      <div className="glass-surface rounded-2xl p-6">
+        <h2 className="mb-4 font-display text-xl font-semibold">
+          Top matching jobs
         </h2>
 
         {selectedJobs.length === 0 ? (
-          <p className="text-white/50">
-            No jobs selected.
-          </p>
+          <p className="text-paper-dim/60">No jobs selected yet.</p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {selectedJobs.map((job: any, index: number) => (
-              <div
+              <motion.div
                 key={index}
-                className="border border-white/10 rounded-xl p-4"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
-                <h3 className="font-semibold text-lg">
-                  {job.title || "Untitled Job"}
-                </h3>
-
-                <p className="text-white/60">
-                  {job.company || "Unknown Company"}
-                </p>
-
-                <p className="text-sm text-cyan-400 mt-2">
-                  {job.location || ""}
-                </p>
-              </div>
+                <TiltCard className="rounded-xl border border-line px-4 py-4 transition-colors duration-300 hover:border-signal/40">
+                  <div className="relative flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold">
+                        {job.title || "Untitled Job"}
+                      </h3>
+                      <p className="text-sm text-paper-dim">
+                        {job.company || "Unknown Company"}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      {job.location && (
+                        <p className="font-mono text-xs text-signal">
+                          {job.location}
+                        </p>
+                      )}
+                      {typeof job.score === "number" && (
+                        <p className="mt-1 font-mono text-[10px] text-paper-dim/50">
+                          score: {job.score}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </TiltCard>
+              </motion.div>
             ))}
           </div>
         )}
-
       </div>
 
       <button
         onClick={() => setActive("Resume")}
-        className="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 transition"
+        className="glow-signal rounded-full bg-signal px-6 py-3 font-semibold text-ink transition hover:bg-signal-2"
       >
-        View AI Resume →
+        View AI resume →
       </button>
-
     </div>
   );
 }

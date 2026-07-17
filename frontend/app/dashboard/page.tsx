@@ -50,8 +50,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#05060a] text-white">
-        Loading...
+      <div className="flex min-h-screen items-center justify-center bg-ink font-mono text-sm text-paper-dim">
+        <span className="animate-pulse">Loading workspace…</span>
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default function DashboardPage() {
   // New user
   if (!resumeUploaded) {
     return (
-      <div className="min-h-screen bg-[#05060a] flex items-center justify-center px-6">
+      <div className="flex min-h-screen items-center justify-center bg-ink px-6">
         <UploadResume />
       </div>
     );
@@ -100,6 +100,7 @@ export default function DashboardPage() {
     <WorkspaceLayout
       active={active}
       setActive={setActive}
+      credits={user.credits}
     >
       {renderContent()}
     </WorkspaceLayout>
