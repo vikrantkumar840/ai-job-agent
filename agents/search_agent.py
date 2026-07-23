@@ -7,7 +7,7 @@ def search_node(state):
     jobs = search_jobs(
         role=preferences.get("role", ""),
         city=preferences.get("location", ""),
-        website=preferences.get("website", ""),
+        website=preferences.get("website",["LinkedIn", "RemoteOK"]),
         limit=preferences.get("jobs_count", 20),    )
 
     return {

@@ -5,6 +5,7 @@ from workflows.graph import workflow
 from tools.job_search import search_jobs
 from agents.profile_agent import extract_profile
 from services.resume_version_service import save_resume_version
+from database.search_session_store import init_search_sessions_table, save_search_session
 
 from services.session_service import (
     save_resume,
@@ -12,6 +13,8 @@ from services.session_service import (
     save_cover_letter,
     save_ai_output,
 )
+
+init_search_sessions_table()
 
 router = APIRouter(
     prefix="/orchestrator",
@@ -62,7 +65,7 @@ def start_agent(payload: dict):
     job_result = search_jobs(
         role=role,
         city=preferences.get("location", ""),
-        website=preferences.get("website", "LinkedIn"),
+        websites=preferences.get("websites", ["LinkedIn", "RemoteOK"]),
         experience=preferences.get("experience", ""),
         limit=preferences.get("jobs_count", 10),
     )
@@ -71,6 +74,15 @@ def start_agent(payload: dict):
 
     jobs = job_result["jobs"]
     session_id = job_result["session_id"]
+
+    save_search_session(
+        session_id=session_id,
+        user_id=user_id,
+        role=role,
+        city=preferences.get("location", ""),
+        experience=preferences.get("experience", ""),
+        websites=preferences.get("websites", ["LinkedIn", "RemoteOK"]),
+    )
 
     state = {
         "resume_text": resume_text,

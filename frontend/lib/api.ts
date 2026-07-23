@@ -219,3 +219,67 @@ export async function regenerateJobs(payload: {
 export async function parseResume(file: File) {
   return uploadResume(file);
 }
+
+// =====================================
+// Auto Apply
+// =====================================
+
+export async function previewAutoApply(payload: {
+  job_url: string;
+  full_name: string;
+  email: string;
+  resume_path: string;
+  location: string;
+  linkedin_url: string;
+}) {
+  return apiRequest("/auto-apply/preview", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function confirmAutoApply(
+  autoApplyId: number,
+  payload: {
+    full_name: string;
+    email: string;
+    resume_path: string;
+    location: string;
+    linkedin_url: string;
+  }
+) {
+  return apiRequest(`/auto-apply/${autoApplyId}/confirm`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function rejectAutoApply(autoApplyId: number) {
+  return apiRequest(`/auto-apply/${autoApplyId}/reject`, {
+    method: "POST",
+  });
+}
+
+export function autoApplyScreenshotUrl(autoApplyId: number) {
+  return `${BASE_URL}/auto-apply/${autoApplyId}/screenshot`;
+}
+
+export async function quickApply(payload: {
+  job_url: string;
+  job_title?: string;
+  job_company?: string;
+  full_name: string;
+  email: string;
+  resume_path?: string;
+  location?: string;
+  linkedin_url?: string;
+  notify_email?: string;
+}) {
+  return apiRequest("/auto-apply/quick", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+}

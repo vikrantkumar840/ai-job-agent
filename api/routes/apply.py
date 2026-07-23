@@ -1,26 +1,33 @@
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from agents.auto_apply_agent import run_auto_apply
 
-from sqlalchemy.orm import Session
+router = APIRouter(prefix="/apply", tags=["apply"])
 
-from database.postgres import get_db
-from services.apply_service import apply_to_job
+class ApplicantInfo(BaseModel):
+    full_name: str
+    email: str
+    phone: str = ""
 
-router = APIRouter(
-    prefix="/apply",
-    tags=["Apply"],
-)
+class AutoApplyRequest(BaseModel):
+    ranked_jobs: list[dict]
+    applicant: ApplicantInfo
+    resume_file_path: str
+    cover_letter_text: str
+    max_jobs: int = 5
+    notify_email: str | None = None
 
-
-@router.post("/")
-def apply(
-    payload: dict,
-    db: Session = Depends(get_db),
-):
-    return apply_to_job(
-        db=db,
-        user_id=payload["user_id"],
-        session_id=payload["session_id"],
-        company=payload["company"],
-        role=payload["role"],
-    )
+@router.post("/auto")
+async def auto_apply(payload: AutoApplyRequest):
+    try:
+        result = run_auto_apply(
+            ranked_jobs=payload.ranked_jobs,
+            applicant=payload.applicant.dict(),
+            resume_file_path=payload.resume_file_path,
+            cover_letter_text=payload.cover_letter_text,
+            max_jobs=payload.max_jobs,
+            notify_email=payload.notify_email,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Auto-apply run failed: {str(e)}")
+    return result

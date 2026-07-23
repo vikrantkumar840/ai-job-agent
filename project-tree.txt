@@ -1,0 +1,248 @@
+.
+├── .env
+├── .gitignore
+├── .streamlit
+│   └── config.toml
+├── README.md
+├── agents
+│   ├── application_agent.py
+│   ├── ats_agent.py
+│   ├── chat_agent.py
+│   ├── cover_letter_agent.py
+│   ├── interview_agent.py
+│   ├── profile_agent.py
+│   ├── ranking_agent.py
+│   ├── resume_agent.py
+│   ├── search_agent.py
+│   ├── state.py
+│   └── tracker_agent.py
+├── api
+│   ├── app.py
+│   ├── main.py
+│   ├── models
+│   │   ├── profile.py
+│   │   ├── resume.py
+│   │   └── search.py
+│   ├── routes
+│   │   ├── __init__.py
+│   │   ├── agent.py
+│   │   ├── analytics.py
+│   │   ├── applications.py
+│   │   ├── apply.py
+│   │   ├── ats.py
+│   │   ├── auth.py
+│   │   ├── chat.py
+│   │   ├── chat_history.py
+│   │   ├── dashboard.py
+│   │   ├── interview.py
+│   │   ├── jobs.py
+│   │   ├── orchestrator.py
+│   │   ├── profile.py
+│   │   ├── regenerate.py
+│   │   ├── resume.py
+│   │   ├── resume_versions.py
+│   │   ├── search.py
+│   │   └── settings.py
+│   └── services
+│       ├── __init__.py
+│       ├── application_service.py
+│       └── job_service.py
+├── auth
+│   ├── __init__.py
+│   ├── dependencies.py
+│   ├── hash.py
+│   ├── jwt.py
+│   └── schemas.py
+├── browser
+│   ├── linkedin.py
+│   └── playwright_client.py
+├── config
+│   ├── constants.py
+│   ├── llm.py
+│   └── settings.py
+├── dashboard
+│   ├── app.py
+│   ├── components
+│   │   ├── job_card.py
+│   │   ├── metric_cards.py
+│   │   ├── sidebar.py
+│   │   └── styles.py
+│   ├── pages
+│   │   ├── 0_Search.py
+│   │   ├── 1_Jobs.py
+│   │   ├── 2_Applications.py
+│   │   ├── 3_Analytics.py
+│   │   └── 4_Settings.py
+│   └── utils.py
+├── database
+│   ├── __init__.py
+│   ├── app.db
+│   ├── applications.db
+│   ├── config.py
+│   ├── db.py
+│   ├── init_db.py
+│   ├── models.py
+│   ├── mongodb.py
+│   ├── postgres.py
+│   └── schema.sql
+├── docker-compose.yml
+├── frontend
+│   ├── .gitignore
+│   ├── AGENTS.md
+│   ├── CLAUDE.md
+│   ├── README.md
+│   ├── app
+│   │   ├── billing
+│   │   │   └── page.tsx
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── jobs
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── preferences
+│   │   │   └── page.tsx
+│   │   ├── register
+│   │   │   └── page.tsx
+│   │   ├── resume
+│   │   │   └── page.tsx
+│   │   ├── search
+│   │   │   └── page.tsx
+│   │   └── workflow
+│   │       └── page.tsx
+│   ├── components
+│   │   ├── animations
+│   │   │   └── variants.ts
+│   │   ├── apple
+│   │   │   ├── Bento.tsx
+│   │   │   ├── CTA.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── Hero.tsx
+│   │   │   ├── ScrollScene.tsx
+│   │   │   └── Tech.tsx
+│   │   ├── auth
+│   │   │   ├── LoginForm.tsx
+│   │   │   └── RegisterForm.tsx
+│   │   ├── dashboard
+│   │   │   ├── DashboardHero.tsx
+│   │   │   ├── JobPreviewCard.tsx
+│   │   │   ├── StatCard.tsx
+│   │   │   ├── UploadResume.tsx
+│   │   │   └── WorkflowStatus.tsx
+│   │   ├── effects
+│   │   │   └── BackgroundGlow.tsx
+│   │   ├── landing
+│   │   │   ├── AIAgentLanding.tsx
+│   │   │   ├── Approval.tsx
+│   │   │   ├── BackgroundField.tsx
+│   │   │   ├── Capabilities.tsx
+│   │   │   ├── Console.tsx
+│   │   │   ├── CustomCursor.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── Hero.tsx
+│   │   │   ├── MagneticButton.tsx
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── ParticleField.tsx
+│   │   │   ├── Pipeline.tsx
+│   │   │   ├── Preloader.tsx
+│   │   │   ├── SectionLabel.tsx
+│   │   │   ├── Stack.tsx
+│   │   │   └── TiltCard.tsx
+│   │   ├── layout
+│   │   │   ├── AppShell.tsx
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   ├── SmoothScroll.tsx
+│   │   │   ├── Topbar.tsx
+│   │   │   └── WorkspaceLayout.tsx
+│   │   ├── providers
+│   │   │   └── AuthProvider.tsx
+│   │   ├── ui
+│   │   │   ├── Button.tsx
+│   │   │   ├── GlassCard.tsx
+│   │   │   └── Motion.tsx
+│   │   └── workspace
+│   │       ├── CoverLetter.tsx
+│   │       ├── Interview.tsx
+│   │       ├── Overview.tsx
+│   │       ├── Results.tsx
+│   │       ├── Resume.tsx
+│   │       └── Search.tsx
+│   ├── context
+│   │   └── AuthContext.tsx
+│   ├── eslint.config.mjs
+│   ├── hooks
+│   │   ├── useAuth.ts
+│   │   └── useScrollReveal.ts
+│   ├── lib
+│   │   ├── api.ts
+│   │   ├── auth.ts
+│   │   └── utils.ts
+│   ├── middleware.ts
+│   ├── next-env.d.ts
+│   ├── next.config.js
+│   ├── next.config.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.mjs
+│   ├── public
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   └── window.svg
+│   ├── tsconfig.json
+│   └── types
+│       └── auth.ts
+├── main.py
+├── project-tree.txt
+├── prompts
+│   ├── cover_letter.txt
+│   ├── interview.txt
+│   ├── job_match.txt
+│   ├── job_match_prompt.txt
+│   └── resume.txt
+├── requirements.txt
+├── resumes
+│   ├── base
+│   │   └── Vikrant_devops-14-06-2026.pdf
+│   ├── base_resume.md
+│   └── profile.py
+├── services
+│   ├── analytics_service.py
+│   ├── application_service.py
+│   ├── apply_service.py
+│   ├── ats_service.py
+│   ├── chat_history_service.py
+│   ├── chat_service.py
+│   ├── dashboard_service.py
+│   ├── interview_service.py
+│   ├── mongo_service.py
+│   ├── resume_version_service.py
+│   ├── session_service.py
+│   └── storage_service.py
+├── tools
+│   ├── email_sender.py
+│   ├── job_search.py
+│   ├── linkedin_search.py
+│   ├── pdf_writer.py
+│   ├── remoteok.py
+│   └── resume_parser.py
+├── vector
+│   ├── __init__.py
+│   ├── embedding.py
+│   ├── indexer.py
+│   ├── init_db.py
+│   ├── qdrant_store.py
+│   └── retriever.py
+└── workflows
+    ├── graph.py
+    ├── nodes.py
+    └── state.py
+
+48 directories, 198 files

@@ -18,6 +18,8 @@ from api.routes.resume_versions import router as resume_versions_router
 from api.routes.interview import router as interview_router
 from api.routes.analytics import router as analytics_router
 from api.routes.regenerate import router as regenerate_router
+from api.routes import auto_apply, jobs_regenerate
+from api.routes import quick_apply
 
 
 app = FastAPI()
@@ -52,3 +54,6 @@ app.include_router(analytics_router)
 app.include_router(resume_versions_router)
 app.include_router(interview_router)
 app.include_router(regenerate_router)
+app.include_router(auto_apply.router)
+app.include_router(jobs_regenerate.router)
+app.include_router(quick_apply.router)
