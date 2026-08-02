@@ -40,7 +40,7 @@ class ConfirmPayload(BaseModel):
 
 
 @router.post("/preview")
-async def preview(payload: ApplicantPayload):
+def preview(payload: ApplicantPayload):
     applicant = {
         "full_name": payload.full_name,
         "email": payload.email,
@@ -76,7 +76,7 @@ async def preview(payload: ApplicantPayload):
 
 
 @router.post("/{auto_apply_id}/confirm")
-async def confirm(auto_apply_id: int, payload: ConfirmPayload):
+def confirm(auto_apply_id: int, payload: ConfirmPayload):
     record = get_auto_apply(auto_apply_id)
     if not record:
         raise HTTPException(status_code=404, detail="Auto-apply record not found.")

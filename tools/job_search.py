@@ -2,7 +2,9 @@ import traceback
 import uuid
 from browser.linkedin import search_linkedin_jobs
 from tools.remoteok import search_remoteok_jobs
-from tools.adzuna_search import search_adzuna_jobs
+from tools.arbeitnow_search import search_arbeitnow_jobs
+from tools.remotive_search import search_remotive_jobs
+from tools.time_utils import is_within_hours
 from vector.indexer import index_jobs
 from vector.retriever import search_jobs as vector_search
 
@@ -20,13 +22,16 @@ SOURCE_FUNCTIONS = {
     "linkedin": lambda role, city, experience, limit: search_linkedin_jobs(
         role=role, location=city or "India", experience=experience
     ),
-    "remoteok": lambda role, city, experience, limit: search_remoteok_jobs(),
-    "adzuna": lambda role, city, experience, limit: search_adzuna_jobs(
+    "remoteok": lambda role, city, experience, limit: search_remoteok_jobs(role=role, limit=limit),
+    "arbeitnow": lambda role, city, experience, limit: search_arbeitnow_jobs(
         role=role, city=city, limit=limit
+    ),
+    "remotive": lambda role, city, experience, limit: search_remotive_jobs(
+        role=role, limit=limit
     ),
 }
 
-DEFAULT_SOURCES = ["linkedin", "remoteok"]
+DEFAULT_SOURCES = ["linkedin", "remoteok", "arbeitnow", "remotive"]
 
 
 def remove_duplicates(jobs):
@@ -63,6 +68,7 @@ def search_jobs(
     websites: list[str] = None,
     experience: str = "",
     limit: int = 10,
+    max_age_hours: float = None,
 ):
     selected = list(websites) if websites else []
     if website and website not in selected:
@@ -80,6 +86,7 @@ def search_jobs(
     print("Location  :", city)
     print("Sources   :", selected)
     print("Experience:", experience)
+    print("Max age   :", max_age_hours if max_age_hours is not None else "any")
     print("=" * 80)
 
     for source_name in selected:
@@ -103,6 +110,17 @@ def search_jobs(
             jobs = filtered
         else:
             print("No location matches — keeping all jobs unfiltered instead of dropping to 0/1")
+
+    if max_age_hours is not None:
+        fresh = [
+            job for job in jobs
+            if is_within_hours(max_age_hours, job.get("posted_at"), job.get("posted_relative"))
+        ]
+        print(f"Freshness filter (<= {max_age_hours}h): {len(fresh)} of {len(jobs)} jobs matched")
+        if fresh:
+            jobs = fresh
+        else:
+            print("No jobs within that freshness window — keeping full list instead of returning empty")
 
     jobs = remove_duplicates(jobs)
     jobs = jobs[: max(limit * 3, 30)]

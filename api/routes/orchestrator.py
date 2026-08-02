@@ -61,14 +61,22 @@ def start_agent(payload: dict):
     # ============================================================
 
     t = time.perf_counter()
-
+    role = (
+        preferences.get("role")
+        or preferences.get("department")
+        or ""
+    ).strip()
+    if not role:
+        role = (profile.get("target_role") or profile.get("career_role") or "").strip()
     job_result = search_jobs(
         role=role,
         city=preferences.get("location", ""),
+        website=preferences.get("website", ""),
         websites=preferences.get("websites", ["LinkedIn", "RemoteOK"]),
         experience=preferences.get("experience", ""),
         limit=preferences.get("jobs_count", 10),
-    )
+        max_age_hours=preferences.get("max_age_hours"),    
+        )
 
     print(f"✅ Job Search        : {time.perf_counter() - t:.2f} sec")
 

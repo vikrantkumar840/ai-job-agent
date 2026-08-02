@@ -28,7 +28,7 @@ export function isLoggedIn() {
   return !!getAccessToken();
 }
 
-export function authHeader() {
+export function authHeader(): Record<string, string> {
   const token = getAccessToken();
 
   return token

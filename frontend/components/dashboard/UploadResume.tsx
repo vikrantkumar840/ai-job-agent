@@ -5,14 +5,17 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { UploadCloud, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 
-import {
-  uploadResume,
-  runOrchestrator,
-} from "@/lib/api";
-
+import { uploadResume, runOrchestrator } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = ["Resume", "Preferences", "Review"];
+const SOURCES = ["LinkedIn", "RemoteOK", "Arbeitnow", "Remotive"];
+const AGE_OPTIONS = [
+  { label: "Any time", value: "" },
+  { label: "Last 24 hours", value: "24" },
+  { label: "Last 3 days", value: "72" },
+  { label: "Last week", value: "168" },
+];
 
 export default function UploadResume() {
   const router = useRouter();
@@ -27,12 +30,19 @@ export default function UploadResume() {
   const [experience, setExperience] = useState("Entry Level");
   const [skills, setSkills] = useState("");
   const [industry, setIndustry] = useState("");
-  const [website, setWebsite] = useState("LinkedIn");
+  const [websites, setWebsites] = useState<string[]>(["LinkedIn", "RemoteOK"]);
+  const [maxAgeHours, setMaxAgeHours] = useState("");
   const [jobsCount, setJobsCount] = useState(25);
 
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+
+  function toggleSource(source: string) {
+    setWebsites((prev) =>
+      prev.includes(source) ? prev.filter((s) => s !== source) : [...prev, source]
+    );
+  }
 
   function canContinueFromStep(current: number) {
     if (current === 0) return !!file;
@@ -95,7 +105,8 @@ export default function UploadResume() {
           experience,
           skills,
           industry,
-          website,
+          websites,
+          max_age_hours: maxAgeHours ? Number(maxAgeHours) : null,
           jobs_count: jobsCount,
         },
       });
@@ -127,7 +138,6 @@ export default function UploadResume() {
         Three steps. Then the agent runs on its own.
       </p>
 
-      {/* Progress */}
       <div className="mt-8 flex items-center gap-2">
         {STEPS.map((label, i) => (
           <div key={label} className="flex flex-1 items-center gap-2">
@@ -230,17 +240,40 @@ export default function UploadResume() {
                   <option>Senior</option>
                 </select>
               </Field>
-              <Field label="Job website">
+
+              <Field label="Posted within">
                 <select
-                  value={website}
-                  onChange={(e) => setWebsite(e.target.value)}
+                  value={maxAgeHours}
+                  onChange={(e) => setMaxAgeHours(e.target.value)}
                   className="input-field"
                 >
-                  <option>LinkedIn</option>
-                  <option>Naukri</option>
-                  <option>Indeed</option>
+                  {AGE_OPTIONS.map((opt) => (
+                    <option key={opt.label} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
                 </select>
               </Field>
+
+              <Field label="Job sources" full>
+                <div className="flex flex-wrap gap-2">
+                  {SOURCES.map((source) => (
+                    <button
+                      type="button"
+                      key={source}
+                      onClick={() => toggleSource(source)}
+                      className={`rounded-full border px-4 py-2 text-sm transition ${
+                        websites.includes(source)
+                          ? "border-signal bg-signal/10 text-signal"
+                          : "border-line-strong text-paper-dim hover:bg-white/5"
+                      }`}
+                    >
+                      {source}
+                    </button>
+                  ))}
+                </div>
+              </Field>
+
               <Field label="Skills" full>
                 <textarea
                   rows={3}
@@ -284,7 +317,11 @@ export default function UploadResume() {
               <SummaryRow label="Role" value={role || "—"} />
               <SummaryRow label="Location" value={location || "—"} />
               <SummaryRow label="Experience" value={experience} />
-              <SummaryRow label="Website" value={website} />
+              <SummaryRow
+                label="Posted within"
+                value={AGE_OPTIONS.find((o) => o.value === maxAgeHours)?.label || "Any time"}
+              />
+              <SummaryRow label="Sources" value={websites.join(", ") || "—"} />
               <SummaryRow label="Jobs to fetch" value={String(jobsCount)} />
 
               {status && (

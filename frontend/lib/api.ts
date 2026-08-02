@@ -12,11 +12,10 @@ async function apiRequest(
   endpoint: string,
   options: RequestInit = {}
 ) {
-  const headers = {
-    ...(options.headers || {}),
+  const headers: Record<string, string> = {
+    ...(options.headers as Record<string, string> | undefined),
     ...authHeader(),
   };
-
   const res = await fetch(`${BASE_URL}${endpoint}`, {
     ...options,
     headers,
@@ -123,12 +122,21 @@ interface UserProfile {
 }
 
 interface UserPreferences {
+  role: string;
   location: string;
-  department: string;
   experience: string;
-  website: string;
+  skills?: string;
+  industry?: string;
+
+  // Multi-select job websites
+  websites: string[];
+
+  // Job age filter
+  max_age_hours?: number | null;
+
   jobs_count: number;
 }
+
 
 export async function runOrchestrator(payload: {
   user_id: number;

@@ -29,7 +29,7 @@ class QuickApplyRequest(BaseModel):
 
 
 @router.post("/quick")
-async def quick_apply(payload: QuickApplyRequest):
+def quick_apply(payload: QuickApplyRequest):
     applicant = {
         "full_name": payload.full_name,
         "email": payload.email,
