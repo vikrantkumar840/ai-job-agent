@@ -1,0 +1,8 @@
+services:
+  api:
+    build: !reset null
+    image: ghcr.io/vikrantkumar840/ai-job-agent-backend:latest
+
+  frontend:
+    build: !reset null
+    image: ghcr.io/vikrantkumar840/ai-job-agent-frontend:latest
