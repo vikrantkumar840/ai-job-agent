@@ -48,6 +48,16 @@ class User(Base):
         default=5,
     )
 
+    plan = Column(
+        String,
+        default="free",  # "free" or "pro"
+    )
+
+    plan_expires_at = Column(
+        DateTime(timezone=True),
+        nullable=True,
+    )
+
     email_verified = Column(
         Boolean,
         default=False,
@@ -105,6 +115,49 @@ class RefreshToken(Base):
     revoked = Column(
         Boolean,
         default=False,
+    )
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+
+class Payment(Base):
+    __tablename__ = "payments"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+
+    razorpay_order_id = Column(
+        String,
+        unique=True,
+        nullable=False,
+    )
+
+    razorpay_payment_id = Column(
+        String,
+        nullable=True,
+    )
+
+    amount_paise = Column(
+        Integer,
+        nullable=False,
+    )
+
+    plan = Column(
+        String,
+        nullable=False,  # "pro_monthly", "credits_pack_50", etc.
+    )
+
+    status = Column(
+        String,
+        default="created",  # created -> paid -> failed
     )
 
     created_at = Column(

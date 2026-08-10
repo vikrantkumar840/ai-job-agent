@@ -1,6 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from agents.auto_apply_agent import run_auto_apply
+from auth.credits import require_credit
+from database.models import User
 
 router = APIRouter(prefix="/apply", tags=["apply"])
 
@@ -18,7 +20,10 @@ class AutoApplyRequest(BaseModel):
     notify_email: str | None = None
 
 @router.post("/auto")
-async def auto_apply(payload: AutoApplyRequest):
+async def auto_apply(
+    payload: AutoApplyRequest,
+    current_user: User = Depends(require_credit),
+):
     try:
         result = run_auto_apply(
             ranked_jobs=payload.ranked_jobs,

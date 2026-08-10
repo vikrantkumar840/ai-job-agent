@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI
 
 from api.routes.auth import router as auth_router
@@ -20,24 +22,34 @@ from api.routes.analytics import router as analytics_router
 from api.routes.regenerate import router as regenerate_router
 from api.routes import auto_apply, jobs_regenerate
 from api.routes import quick_apply
+from api.routes.billing import router as billing_router
 
 
 app = FastAPI()
+
+_default_origins = "http://localhost:3000"
+_cors_origins = os.getenv("CORS_ALLOWED_ORIGINS", _default_origins)
+allow_origins = [origin.strip() for origin in _cors_origins.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://3.223.73.199:3000",
-        "http://172.31.91.33:3000",
-    ],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/health")
+def health_check():
+    """Liveness/readiness probe target for Kubernetes."""
+    return {"status": "ok"}
+
+
 @app.on_event("startup")
 def startup_event():
-    
-     init_database()    
+
+     init_database()
      init_vector_db()
 app.include_router(search_router, prefix="/search")
 app.include_router(agent_router)
@@ -57,3 +69,4 @@ app.include_router(regenerate_router)
 app.include_router(auto_apply.router)
 app.include_router(jobs_regenerate.router)
 app.include_router(quick_apply.router)
+app.include_router(billing_router)
