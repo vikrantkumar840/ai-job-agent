@@ -2,7 +2,7 @@ import { authHeader } from "./auth";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://3.223.73.199:8000";
+  "http://32.192.232.4:8000";
 
 // =====================================
 // Generic Request Helper
