@@ -57,6 +57,12 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {user ? (
             <>
+              <Link
+                href="/dashboard"
+                className="hidden rounded-full border border-line-strong px-5 py-2.5 text-sm transition hover:bg-white/5 sm:inline-block"
+              >
+                Dashboard
+              </Link>
               <span className="hidden text-sm text-paper-dim sm:inline">
                 {user.full_name}
               </span>

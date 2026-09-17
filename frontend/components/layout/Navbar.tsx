@@ -89,6 +89,11 @@ export default function Navbar() {
           <a href="#contact" className="hover:text-white transition">
             Contact
           </a>
+	  {user && (
+		  <Link href="/workspace" className="hover:text-white transition">
+		  Workspace
+		  </Link>
+	  )}
         </nav>
 
         <div className="flex items-center gap-3">
