@@ -22,3 +22,5 @@ logs/
 .DS_Store
 node_modules/
 k8s/secret/secret.yaml
+
+k8s/
